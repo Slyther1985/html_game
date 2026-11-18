@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taller y Circuito de Juguetes 3D - Piezas Intercambiables</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23161c26'/%3E%3Cpath d='M10 38 L18 24 L42 24 L54 34 L54 44 L10 44 Z' fill='%23ff1e27'/%3E%3Cpath d='M21 26 L39 26 L46 33 L17 33 Z' fill='%2338bdf8'/%3E%3Ccircle cx='20' cy='44' r='8' fill='%230f172a' stroke='%23fbbf24' stroke-width='3'/%3E%3Ccircle cx='44' cy='44' r='8' fill='%230f172a' stroke='%23fbbf24' stroke-width='3'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/estilos.css" />
+
+  <!-- Librerías Three.js r128 autorizadas (sin módulos ES) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+</head>
+<body>
+
+  <!-- Barra superior de estado y cambio de modo -->
+  <div id="barra-superior">
+    <div id="barra-estado">
+      Modo Taller: Haz clic en un <span class="destacado">enganche brillante</span> o usa la bandeja.
+    </div>
+    <div id="controles-modo">
+      <button id="btn-habitacion" class="btn-habitacion" title="Cambiar escenario o habitación (Tecla H)">
+        🏠 Escenario: Cuarto de Andy (H)
+      </button>
+      <button id="btn-clase-vehiculo" class="btn-clase" title="Cambiar clase de vehículo: Coche, Moto, Barco o Avión (Tecla V)">
+        🚗 Clase: Coche (V)
+      </button>
+      <button id="btn-audio" class="btn-audio" title="Activar o silenciar el audio (Tecla M)">
+        🔊 Audio (M)
+      </button>
+      <button id="btn-pista" class="btn-pista" title="Cambiar música de conducción (Tecla N)">
+        🎵 Pista (N)
+      </button>
+      <button id="btn-camara" class="btn-secundario" title="Alternar entre Tercera Persona y Cabina (Tecla C)">
+        Cámara: 3ª Persona (C)
+      </button>
+      <button id="btn-alternar-modo" class="btn-principal" title="Salir a conducir por la pista o regresar al taller (Tecla T)">
+        ¡Conducir! (T)
+      </button>
+    </div>
+  </div>
+
+  <canvas id="lienzo-3d"></canvas>
+
+  <!-- HUD compacto de conducción -->
+  <div id="hud-conduccion">
+    <div class="bloque-velocimetro">
+      <div class="cabecera-hud-chasis">
+        <span id="nombre-chasis-hud">Sedán GT Turbo</span>
+        <span id="insignia-estado-hud"></span>
+      </div>
+      <div class="lectura-velocidad">
+        <span id="valor-velocidad">0</span>
+        <span class="unidad-velocidad">km/h</span>
+        <span id="altitud-hud" class="lectura-altitud">ALT: 0.0 m</span>
+      </div>
+    </div>
+    <div class="panel-cronometro-hud">
+      <div class="fila-crono principal">
+        <span class="etiqueta-crono">TIEMPO ACTUAL</span>
+        <span id="tiempo-actual-hud" class="valor-tiempo">00:00.00</span>
+      </div>
+      <div class="fila-crono">
+        <span class="etiqueta-crono">ÚLTIMA VUELTA</span>
+        <span id="ultima-vuelta-hud" class="valor-tiempo">--:--.--</span>
+      </div>
+      <div class="fila-crono">
+        <span class="etiqueta-crono">MEJOR VUELTA</span>
+        <span id="mejor-vuelta-hud" class="valor-tiempo record">--:--.--</span>
+      </div>
+      <div class="fila-crono checkpoints">
+        <span class="etiqueta-crono">CHECKPOINTS</span>
+        <span id="checkpoints-hud" class="valor-checkpoints">CP: 0 / 5</span>
+      </div>
+      <div id="aviso-record-hud">¡NUEVA VUELTA RÉCORD!</div>
+    </div>
+    <div class="guia-teclas">
+      <span><b>W / S</b> o <b>↑ / ↓</b> Acelerar / Frenar</span>
+      <span><b>A / D</b> o <b>← / →</b> Girar</span>
+      <span><b>Shift / Espacio</b> Derrapar</span>
+      <span id="guia-vuelo-hud" style="display:none"><b>Q / E</b> Altitud</span>
+      <span><b>C</b> Cambiar Cámara</span>
+      <span><b>H</b> Escenario</span>
+      <span><b>R</b> Ir a la Meta</span>
+      <span><b>T</b> Volver al Taller</span>
+    </div>
+  </div>
+
+  <!-- Selector Arcade Superior de Clase Estilo Mario Kart (Modo Taller) -->
+  <div id="selector-clase-mk">
+    <button class="btn-clase-mk activa" data-clase="coche">🚗 COCHES</button>
+    <button class="btn-clase-mk" data-clase="moto">🏍️ MOTOS</button>
+    <button class="btn-clase-mk" data-clase="barco">🚤 BARCOS</button>
+    <button class="btn-clase-mk" data-clase="avion">✈️ AVIONES</button>
+  </div>
+
+  <!-- Panel Izquierdo de Ranuras en Cascada (Modo Taller) -->
+  <aside id="panel-personalizacion-mk">
+    <div class="cabecera-panel-mk">
+      <span>PERSONALIZAR VEHÍCULO</span>
+      <span id="mk-enganche-activo" class="etiqueta-enganche-mk">Simetría activa</span>
+    </div>
+
+    <div id="ranura-mk-chasis" class="ranura-mk activa" data-ranura="chasis">
+      <div class="titulo-ranura-mk" id="mk-lbl-chasis">CHASIS</div>
+      <div class="carrusel-ranura-mk">
+        <button class="btn-flecha-mk" data-ranura="chasis" data-dir="-1" title="Anterior">◀</button>
+        <div class="info-pieza-mk">
+          <img id="mk-img-chasis" alt="Chasis" />
+          <div class="texto-pieza-mk">
+            <div id="mk-nombre-chasis" class="nombre-pieza-mk">Sedán GT Turbo</div>
+            <div id="mk-bono-chasis" class="bono-pieza-mk">Equilibrado</div>
+          </div>
+        </div>
+        <button class="btn-flecha-mk" data-ranura="chasis" data-dir="1" title="Siguiente">▶</button>
+      </div>
+    </div>
+
+    <div id="ranura-mk-primaria" class="ranura-mk" data-ranura="primaria">
+      <div class="titulo-ranura-mk" id="mk-lbl-primaria">RUEDAS</div>
+      <div class="carrusel-ranura-mk">
+        <button class="btn-flecha-mk" data-ranura="primaria" data-dir="-1" title="Anterior">◀</button>
+        <div class="info-pieza-mk">
+          <img id="mk-img-primaria" alt="Pieza primaria" />
+          <div class="texto-pieza-mk">
+            <div id="mk-nombre-primaria" class="nombre-pieza-mk">Clásica</div>
+            <div id="mk-bono-primaria" class="bono-pieza-mk">+2 VEL · +2 ACEL · +2 CTRL</div>
+          </div>
+        </div>
+        <button class="btn-flecha-mk" data-ranura="primaria" data-dir="1" title="Siguiente">▶</button>
+      </div>
+    </div>
+
+    <div id="ranura-mk-secundaria" class="ranura-mk" data-ranura="secundaria">
+      <div class="cabecera-secundaria-mk">
+        <span class="titulo-ranura-mk" id="mk-lbl-secundaria">ACCESORIO</span>
+        <div id="mk-subranura-tabs" class="subranura-tabs-mk"></div>
+      </div>
+      <div class="carrusel-ranura-mk">
+        <button class="btn-flecha-mk" data-ranura="secundaria" data-dir="-1" title="Anterior">◀</button>
+        <div class="info-pieza-mk">
+          <img id="mk-img-secundaria" alt="Pieza secundaria" />
+          <div class="texto-pieza-mk">
+            <div id="mk-nombre-secundaria" class="nombre-pieza-mk">Alerón</div>
+            <div id="mk-bono-secundaria" class="bono-pieza-mk">+2 VEL · +5 CTRL</div>
+          </div>
+        </div>
+        <button class="btn-flecha-mk" data-ranura="secundaria" data-dir="1" title="Siguiente">▶</button>
+      </div>
+    </div>
+
+    <div id="ranura-mk-pintura" class="ranura-mk" data-ranura="pintura">
+      <div class="titulo-ranura-mk">PINTURA Y ENGANCHES (↑/↓ Fila · ←/→ Cambiar)</div>
+      <div id="mk-grid-colores" class="grid-colores-mk"></div>
+      <div id="acciones-enganche" class="acciones-mk-fila">
+        <button id="btn-modo-ruedas" class="btn-accion modo-activo" title="Alternar entre cambiar las 4 ruedas a la vez o solo una">
+          Modo: 4 ruedas juntas
+        </button>
+        <button id="btn-quitar" class="btn-accion peligro" title="Retira la pieza del enganche activo">
+          Quitar pieza
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Panel Derecho de Estadísticas Comparativas Estilo Mario Kart -->
+  <aside id="panel-stats-mk">
+    <div class="cabecera-stats-mk">
+      <div id="nombre-vehiculo-mk">Sedán GT Turbo</div>
+      <span id="insignia-clase-mk">COCHE</span>
+    </div>
+    <div id="barras-stats-mk"></div>
+    <div class="acciones-lanzar-mk">
+      <button id="btn-abrir-copas-mk" class="btn-carrera-mk" title="Abrir selector de Copas y Circuitos">
+        🏁 ¡ELEGIR CIRCUITO Y CORRER! (T)
+      </button>
+      <button id="btn-copas-mk" class="btn-copas-sec-mk" title="Explorar Copas e Historial de Récords">
+        🏆 COPAS (H)
+      </button>
+    </div>
+  </aside>
+
+  <!-- Modal de Selección de Copa / Circuito Estilo Mario Kart -->
+  <div id="modal-circuitos-mk" role="dialog" aria-modal="true" aria-label="Selector de Copas y Circuitos">
+    <div class="tarjeta-modal-mk">
+      <div class="cabecera-modal-mk">
+        <div>
+          <h2>🏆 SELECTOR DE COPA Y CIRCUITO</h2>
+          <p id="subtitulo-modal-mk">Elige una habitación temática para competir al instante</p>
+        </div>
+        <button id="btn-cerrar-modal-mk" class="btn-cerrar-mk" title="Volver al Taller">✕ Cerrar</button>
+      </div>
+      <div id="grid-circuitos-mk"></div>
+    </div>
+  </div>
+
+  <!-- Contenedor heredado para compatibilidad DOM sin ocupar espacio visual -->
+  <div id="bandeja-inferior">
+    <div id="cabecera-bandeja">
+      <div id="pestanas">
+        <button class="btn-pestana activa" data-cat="carroceria">Carrocerías</button>
+        <button class="btn-pestana" data-cat="rueda">Ruedas</button>
+        <button class="btn-pestana" data-cat="accesorio">Accesorios</button>
+        <button class="btn-pestana" data-cat="color">Colores</button>
+      </div>
+    </div>
+    <div id="contenedor-items"></div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
