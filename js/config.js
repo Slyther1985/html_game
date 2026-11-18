@@ -1,4 +1,4 @@
-export const URL_WS_PRODUCCION = 'wss://taller-3d-ws.azurecontainerapps.io';
+export const URL_WS_PRODUCCION = 'wss://taller-3d-ws.victoriouswater-aacb8bb6.eastus.azurecontainerapps.io';
 export const URL_WS_LOCAL = 'ws://localhost:8080';
 export const TASA_ENVIO_HZ = 20;
 

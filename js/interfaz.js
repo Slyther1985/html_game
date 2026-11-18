@@ -5,7 +5,9 @@ import {
   teclasConduccion,
   nodosEnganches,
   listaColisionadoresEnganches,
-  estadoCronometro
+  estadoCronometro,
+  estadoRed,
+  jugadoresRemotos
 } from './estado.js';
 import { cacheMiniaturas, liberarObjeto3D, crearVistaPreviaEscenario } from './recursos.js';
 import { lienzo, camara, renderizador, controles, cargarEscenario } from './escenario.js';
@@ -30,6 +32,13 @@ import {
   reproducirCambioColor,
   inicializarAudioInteractivo
 } from './audio.js';
+import {
+  crearSalaOnline,
+  unirseSalaOnline,
+  salirDeSala,
+  enviarApariencia,
+  notificarCambioHabitacion
+} from './red.js';
 
 const ETIQUETAS_CLASE = {
   coche: '🚗 Clase: Coche (V)',
@@ -134,6 +143,230 @@ const gridCircuitosMK = document.getElementById('grid-circuitos-mk');
 const btnAbrirCopasMK = document.getElementById('btn-abrir-copas-mk');
 const btnCopasMK = document.getElementById('btn-copas-mk');
 const btnCerrarModalMK = document.getElementById('btn-cerrar-modal-mk');
+
+// Controles de Multijugador, Etiquetas 3D y Clasificación en Vivo
+const CLAVE_APODO_LOCAL = 'apodo_piloto_3d';
+const panelMultijugador = document.getElementById('panel-multijugador');
+const badgeModoRed = document.getElementById('badge-modo-red');
+const inputApodoRed = document.getElementById('input-apodo-red');
+const vistaRedLobby = document.getElementById('vista-red-lobby');
+const btnCrearSala = document.getElementById('btn-crear-sala');
+const inputCodigoSala = document.getElementById('input-codigo-sala');
+const btnUnirseSala = document.getElementById('btn-unirse-sala');
+const vistaRedActiva = document.getElementById('vista-red-activa');
+const codigoSalaActivo = document.getElementById('codigo-sala-activo');
+const rolSalaActivo = document.getElementById('rol-sala-activo');
+const listaJugadoresSala = document.getElementById('lista-jugadores-sala');
+const btnSalirSala = document.getElementById('btn-salir-sala');
+const avisoRed = document.getElementById('aviso-red');
+const capaEtiquetas3D = document.getElementById('capa-etiquetas-3d');
+const hudLeaderboard = document.getElementById('hud-leaderboard');
+const listaLeaderboardHud = document.getElementById('lista-leaderboard-hud');
+
+const etiquetasDomPorId = new Map();
+let timerAvisoRed = null;
+let ultimoHtmlLeaderboard = '';
+
+function mostrarAvisoRed(mensaje, esError = false) {
+  if (!avisoRed) return;
+  avisoRed.textContent = mensaje || '';
+  avisoRed.classList.toggle('visible', Boolean(mensaje));
+  avisoRed.classList.toggle('error', Boolean(esError));
+  if (timerAvisoRed) clearTimeout(timerAvisoRed);
+  if (mensaje) {
+    timerAvisoRed = setTimeout(() => {
+      avisoRed.classList.remove('visible');
+    }, 4000);
+  }
+}
+
+/**
+ * Sincroniza la vista del panel compacto de multijugador (lobby vs sala activa y lista de pilotos).
+ */
+export function actualizarPanelMultijugador() {
+  const enConduccion = estadoCarro.modoJuego === 'conduccion';
+  if (panelMultijugador) {
+    panelMultijugador.classList.toggle('oculta', enConduccion);
+  }
+  const enLinea = Boolean(estadoRed.conectado && estadoRed.modo === 'online');
+
+  if (badgeModoRed) {
+    badgeModoRed.textContent = enLinea ? 'ONLINE' : 'SOLO';
+    badgeModoRed.classList.toggle('online', enLinea);
+  }
+  if (vistaRedLobby) {
+    vistaRedLobby.style.display = enLinea ? 'none' : 'flex';
+  }
+  if (vistaRedActiva) {
+    vistaRedActiva.style.display = enLinea ? 'flex' : 'none';
+  }
+  if (enLinea) {
+    if (codigoSalaActivo) {
+      codigoSalaActivo.textContent = `SALA: ${estadoRed.codigoSala || '----'}`;
+    }
+    if (rolSalaActivo) {
+      rolSalaActivo.textContent = estadoRed.esAnfitrion ? 'Anfitrión' : 'Invitado';
+    }
+    if (listaJugadoresSala) {
+      listaJugadoresSala.innerHTML = '';
+      const lista = [
+        {
+          id: estadoRed.miId || 'local',
+          apodo: `${estadoRed.apodo || 'Piloto'} (Tú)`,
+          slotParrilla: estadoRed.slotParrilla || 0,
+          esAnfitrion: Boolean(estadoRed.esAnfitrion),
+          enPista: estadoCarro.modoJuego === 'conduccion'
+        },
+        ...Array.from(jugadoresRemotos.values()).map((r) => ({
+          id: r.id,
+          apodo: r.apodo || 'Rival',
+          slotParrilla: Number.isFinite(r.slotParrilla) ? r.slotParrilla : 0,
+          esAnfitrion: Boolean(r.esAnfitrion),
+          enPista: r.enPista !== false
+        }))
+      ].sort((a, b) => a.slotParrilla - b.slotParrilla);
+
+      lista.forEach((jug) => {
+        const fila = document.createElement('div');
+        fila.className = 'fila-jugador-sala';
+        const nombre = document.createElement('span');
+        nombre.textContent = `${jug.esAnfitrion ? '👑 ' : ''}${jug.apodo}`;
+        const estado = document.createElement('span');
+        estado.className = 'estado-jugador-sala' + (jug.enPista ? ' pista' : '');
+        estado.textContent = jug.enPista ? 'En Pista' : 'En Taller';
+        fila.append(nombre, estado);
+        listaJugadoresSala.appendChild(fila);
+      });
+    }
+  } else if (listaJugadoresSala) {
+    listaJugadoresSala.innerHTML = '';
+  }
+}
+
+/**
+ * Proyecta etiquetas 3D flotantes sobre vehículos remotos y actualiza la clasificación en vivo.
+ */
+export function actualizarEtiquetasYLeaderboard() {
+  if (capaEtiquetas3D) {
+    const idsActivos = new Set();
+    const ancho = typeof window !== 'undefined' && window.innerWidth ? window.innerWidth : 1280;
+    const alto = typeof window !== 'undefined' && window.innerHeight ? window.innerHeight : 720;
+
+    if (jugadoresRemotos.size > 0 && camara) {
+      if (typeof camara.updateMatrixWorld === 'function') {
+        camara.updateMatrixWorld();
+      }
+      for (const rem of jugadoresRemotos.values()) {
+        if (!rem || !rem.grupoRaiz || rem.enPista === false) continue;
+        idsActivos.add(rem.id);
+
+        let etiqueta = etiquetasDomPorId.get(rem.id);
+        if (!etiqueta) {
+          etiqueta = document.createElement('div');
+          etiqueta.className = 'etiqueta-jugador-3d';
+          etiqueta.dataset.id = rem.id;
+          capaEtiquetas3D.appendChild(etiqueta);
+          etiquetasDomPorId.set(rem.id, etiqueta);
+        }
+
+        const pos3D = new THREE.Vector3(
+          rem.grupoRaiz.position.x,
+          rem.grupoRaiz.position.y + 0.95,
+          rem.grupoRaiz.position.z
+        );
+        if (typeof pos3D.project === 'function') {
+          pos3D.project(camara);
+        }
+
+        if (pos3D.z >= -1 && pos3D.z <= 1) {
+          const px = (pos3D.x * 0.5 + 0.5) * ancho;
+          const py = (-pos3D.y * 0.5 + 0.5) * alto;
+          etiqueta.style.display = 'flex';
+          etiqueta.style.left = `${px.toFixed(1)}px`;
+          etiqueta.style.top = `${py.toFixed(1)}px`;
+          const estadoTxt = rem.enPista !== false ? 'En Pista' : 'En Taller';
+          etiqueta.classList.toggle('en-taller', rem.enPista === false);
+          const textoMeta = `${rem.apodo || 'Rival'} · ${estadoTxt}`;
+          if (etiqueta.textContent !== textoMeta) {
+            etiqueta.textContent = textoMeta;
+          }
+        } else {
+          etiqueta.style.display = 'none';
+        }
+      }
+    }
+
+    for (const [id, el] of etiquetasDomPorId.entries()) {
+      if (!idsActivos.has(id)) {
+        if (typeof el.remove === 'function') {
+          el.remove();
+        } else if (Array.isArray(capaEtiquetas3D.children)) {
+          capaEtiquetas3D.children = capaEtiquetas3D.children.filter((c) => c !== el);
+        }
+        etiquetasDomPorId.delete(id);
+      }
+    }
+  }
+
+  if (hudLeaderboard) {
+    const mostrarLB =
+      estadoCarro.modoJuego === 'conduccion' &&
+      (estadoRed.modo === 'online' || jugadoresRemotos.size > 0);
+    hudLeaderboard.style.display = mostrarLB ? 'block' : 'none';
+
+    if (mostrarLB && listaLeaderboardHud) {
+      const corredores = [
+        {
+          id: estadoRed.miId || 'local',
+          apodo: estadoRed.apodo || 'Piloto',
+          esLocal: true,
+          vuelta: estadoCronometro.vuelta || 1,
+          checkpointActual: estadoCronometro.checkpointActual || 0,
+          mejorVuelta: estadoCronometro.mejorVuelta ?? null
+        },
+        ...Array.from(jugadoresRemotos.values()).map((r) => ({
+          id: r.id,
+          apodo: r.apodo || 'Rival',
+          esLocal: false,
+          vuelta: r.vuelta || 1,
+          checkpointActual: r.checkpointActual || 0,
+          mejorVuelta: r.mejorVuelta ?? null
+        }))
+      ].sort((a, b) => {
+        if (b.vuelta !== a.vuelta) return b.vuelta - a.vuelta;
+        if (b.checkpointActual !== a.checkpointActual) {
+          return b.checkpointActual - a.checkpointActual;
+        }
+        const mA = a.mejorVuelta !== null && Number.isFinite(a.mejorVuelta) ? a.mejorVuelta : Infinity;
+        const mB = b.mejorVuelta !== null && Number.isFinite(b.mejorVuelta) ? b.mejorVuelta : Infinity;
+        if (mA !== mB) return mA - mB;
+        return a.esLocal ? -1 : b.esLocal ? 1 : 0;
+      });
+
+      const firma = corredores
+        .map((c, idx) => `${idx + 1}|${c.id}|${c.apodo}|${c.vuelta}|${c.checkpointActual}|${c.mejorVuelta ?? ''}`)
+        .join(';');
+      if (firma !== ultimoHtmlLeaderboard) {
+        ultimoHtmlLeaderboard = firma;
+        listaLeaderboardHud.innerHTML = '';
+        corredores.forEach((c, idx) => {
+          const fila = document.createElement('div');
+          fila.className = 'fila-leaderboard-hud' + (c.esLocal ? ' propio' : '');
+          const posSpan = document.createElement('span');
+          posSpan.className = 'pos-leaderboard-hud';
+          posSpan.textContent = `#${idx + 1}`;
+          const nomSpan = document.createElement('span');
+          nomSpan.textContent = c.esLocal ? `${c.apodo} (Tú)` : c.apodo;
+          const metaSpan = document.createElement('span');
+          metaSpan.className = 'meta-leaderboard-hud';
+          metaSpan.textContent = `V${c.vuelta} · CP ${c.checkpointActual}/5`;
+          fila.append(posSpan, nomSpan, metaSpan);
+          listaLeaderboardHud.appendChild(fila);
+        });
+      }
+    }
+  }
+}
 
 /**
  * Genera en código las miniaturas 2D de todas las piezas usando un único WebGLRenderer pequeño.
@@ -314,6 +547,7 @@ function aplicarSeleccionItemTaller(pieza) {
       );
     }
   }
+  enviarApariencia();
 }
 
 /**
@@ -423,6 +657,7 @@ export function actualizarPanelesMarioKart() {
         construirOActualizarCarroceria(estadoCarro.idCarroceria, true, true);
         reproducirCambioColor();
         actualizarPanelesMarioKart();
+        enviarApariencia();
       });
       gridCol.appendChild(btnCol);
     });
@@ -509,6 +744,7 @@ export function ciclarOpcionRanuraMK(ranuraId, direccion = 1) {
       construirOActualizarCarroceria(estadoCarro.idCarroceria, true, true);
       reproducirCambioColor();
       idSeleccionado = colSig.id;
+      enviarApariencia();
     }
   } else {
     const subLista = cfg.secundarias || [{ cat: 'accesorio', label: 'ACCESORIO' }];
@@ -661,6 +897,7 @@ export function cambiarClaseVehiculo(claseDestino = null) {
   actualizarBotonesClaseYHUD();
   renderizarBandeja('carroceria');
   actualizarTextoEstado();
+  enviarApariencia();
   return nuevaClase;
 }
 
@@ -679,7 +916,7 @@ function actualizarTextoBtnHabitacion() {
  * Cambia en caliente la habitación / circuito activo conservando el vehículo armado.
  * Por qué: permite alternar entre las 4 habitaciones temáticas desde el HUD o tecla H.
  */
-export function cambiarHabitacion(idOpcional = null) {
+export function cambiarHabitacion(idOpcional = null, origenRed = false) {
   const actual = estadoCarro.idHabitacion || IDS_HABITACIONES[0];
   const idxActual = Math.max(0, IDS_HABITACIONES.indexOf(actual));
   const siguienteId = IDS_HABITACIONES[(idxActual + 1) % IDS_HABITACIONES.length];
@@ -734,6 +971,9 @@ export function cambiarHabitacion(idOpcional = null) {
   actualizarPanelesMarioKart();
   if (modalCircuitosMK && modalCircuitosMK.classList.contains('abierto')) {
     abrirModalCircuitosMK();
+  }
+  if (!origenRed && estadoRed.conectado && estadoRed.esAnfitrion) {
+    notificarCambioHabitacion(hab.id);
   }
   return hab.id;
 }
@@ -797,6 +1037,10 @@ export function alternarModoTallerConduccion() {
     Object.keys(nodosEnganches).forEach((idEng) => {
       nodosEnganches[idEng].anilloIndicador.material.opacity = 0;
     });
+    if (estadoRed.modo === 'online') {
+      reposicionarEnMeta();
+    }
+    enviarApariencia(true);
   } else {
     estadoCarro.modoJuego = 'taller';
     // Reposicionar suavemente el vehículo en el centro de la alfombra del taller
@@ -850,10 +1094,13 @@ export function alternarModoTallerConduccion() {
     btnAlternarModo.textContent = '¡Conducir! (T)';
     btnAlternarModo.classList.remove('en-conduccion');
     dispararChispasEnEnganche(new THREE.Vector3(0, 0.3, 0));
+    enviarApariencia(false);
   }
   cambiarModoMusical(estadoCarro.modoJuego);
   actualizarTextoEstado();
   actualizarPanelesMarioKart();
+  actualizarPanelMultijugador();
+  actualizarEtiquetasYLeaderboard();
 }
 
 /**
@@ -899,6 +1146,7 @@ export function renderizarBandeja(categoria) {
         construirOActualizarCarroceria(estadoCarro.idCarroceria, true, true);
         reproducirCambioColor();
         renderizarBandeja('color');
+        enviarApariencia();
       });
       contenedorItems.appendChild(tarjeta);
     });
@@ -1008,6 +1256,119 @@ export function configurarEventosInteraccion() {
   actualizarPanelesMarioKart();
   inicializarAudioInteractivo();
 
+  // Restaurar apodo del piloto desde localStorage y conectar controles de sala multijugador
+  let apodoGuardado = null;
+  try {
+    if (typeof localStorage !== 'undefined') {
+      apodoGuardado = localStorage.getItem(CLAVE_APODO_LOCAL);
+    }
+  } catch (e) {
+    // Ignora restricciones de localStorage
+  }
+  if (apodoGuardado && apodoGuardado.trim()) {
+    estadoRed.apodo = apodoGuardado.trim().slice(0, 20);
+  }
+  if (inputApodoRed) {
+    inputApodoRed.value = estadoRed.apodo || 'Piloto';
+    const guardarApodoLocal = () => {
+      const limpio = String(inputApodoRed.value || 'Piloto').trim().slice(0, 20) || 'Piloto';
+      estadoRed.apodo = limpio;
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(CLAVE_APODO_LOCAL, limpio);
+        }
+      } catch (e) {
+        // Ignora errores de almacenamiento local
+      }
+    };
+    inputApodoRed.addEventListener('input', guardarApodoLocal);
+    inputApodoRed.addEventListener('change', guardarApodoLocal);
+  }
+
+  const leerApodoActual = () => {
+    const crudo = inputApodoRed ? inputApodoRed.value : estadoRed.apodo;
+    const limpio = String(crudo || 'Piloto').trim().slice(0, 20) || 'Piloto';
+    estadoRed.apodo = limpio;
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(CLAVE_APODO_LOCAL, limpio);
+      }
+    } catch (e) {
+      // Ignora errores de almacenamiento local
+    }
+    return limpio;
+  };
+
+  if (btnCrearSala) {
+    btnCrearSala.addEventListener('click', () => {
+      const apodo = leerApodoActual();
+      mostrarAvisoRed('Creando sala online...');
+      crearSalaOnline(apodo, estadoCarro.idHabitacion);
+    });
+  }
+  const intentarUnirse = () => {
+    const codigo = inputCodigoSala ? String(inputCodigoSala.value || '').trim().toUpperCase() : '';
+    if (codigo.length < 4) {
+      mostrarAvisoRed('Ingresa el código de 4 caracteres de la sala.', true);
+      return;
+    }
+    const apodo = leerApodoActual();
+    mostrarAvisoRed(`Conectando a ${codigo}...`);
+    unirseSalaOnline(codigo, apodo);
+  };
+  if (btnUnirseSala) {
+    btnUnirseSala.addEventListener('click', intentarUnirse);
+  }
+  if (inputCodigoSala) {
+    inputCodigoSala.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter') {
+        ev.preventDefault();
+        intentarUnirse();
+      }
+    });
+  }
+  if (btnSalirSala) {
+    btnSalirSala.addEventListener('click', () => {
+      salirDeSala();
+      mostrarAvisoRed('Saliste de la sala multijugador.');
+      actualizarPanelMultijugador();
+      actualizarEtiquetasYLeaderboard();
+    });
+  }
+  if (codigoSalaActivo) {
+    codigoSalaActivo.addEventListener('click', () => {
+      if (!estadoRed.codigoSala) return;
+      if (typeof navigator !== 'undefined' && navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(estadoRed.codigoSala).then(
+          () => mostrarAvisoRed(`Código ${estadoRed.codigoSala} copiado.`),
+          () => mostrarAvisoRed(`Sala: ${estadoRed.codigoSala}`)
+        );
+      } else {
+        mostrarAvisoRed(`Sala: ${estadoRed.codigoSala}`);
+      }
+    });
+  }
+
+  window.addEventListener('red:sala_actualizada', () => {
+    actualizarPanelMultijugador();
+    actualizarEtiquetasYLeaderboard();
+  });
+  window.addEventListener('red:cambiar_habitacion', (ev) => {
+    const hid = ev && ev.detail && ev.detail.habitacionId;
+    if (hid && CATALOGO_HABITACIONES[hid] && hid !== estadoCarro.idHabitacion) {
+      cambiarHabitacion(hid, true);
+    }
+  });
+  window.addEventListener('red:error', (ev) => {
+    const msg = (ev && ev.detail && ev.detail.mensaje) || 'Error de red multijugador.';
+    mostrarAvisoRed(msg, true);
+    actualizarPanelMultijugador();
+    actualizarEtiquetasYLeaderboard();
+  });
+
+  actualizarPanelMultijugador();
+  actualizarEtiquetasYLeaderboard();
+
   const gestionarBotonAudio = () => {
     const sil = alternarSilencio();
     if (btnAudio) {
@@ -1080,6 +1441,13 @@ export function configurarEventosInteraccion() {
   btnCamara.addEventListener('click', alternarCamaraConduccion);
 
   window.addEventListener('keydown', (e) => {
+    const tagActivo = document.activeElement && document.activeElement.tagName;
+    if (tagActivo === 'INPUT' || tagActivo === 'TEXTAREA') {
+      if (e.code === 'Escape' && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+      return;
+    }
     if (e.code === 'Space' && estadoCarro.modoJuego === 'conduccion') {
       e.preventDefault();
     }
@@ -1154,6 +1522,7 @@ export function configurarEventosInteraccion() {
     }
     actualizarTextoEstado();
     renderizarBandeja(categoriaActiva);
+    enviarApariencia();
   });
 
   lienzo.addEventListener('pointermove', (e) => {
@@ -1197,6 +1566,7 @@ export function configurarEventosInteraccion() {
         colocarPiezaEnEnganche(idEng, null, true);
         actualizarTextoEstado();
         actualizarPanelesMarioKart();
+        enviarApariencia();
       } else {
         estadoCarro.engancheSeleccionadoId = idEng;
         if (nodo.definicion.grupoSimetria) {

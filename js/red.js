@@ -519,7 +519,7 @@ export function actualizarRed(dt, transportPersonalizado = null) {
     derrapando: Boolean(fisicaCarro.derrapando),
     turbo: fisicaCarro.tiempoTurbo > 0 || fisicaCarro.tiempoMiniTurbo > 0,
     enPista: true,
-    vuelta: 1,
+    vuelta: estadoCronometro.vuelta || 1,
     checkpointActual: estadoCronometro.checkpointActual,
     mejorVuelta: estadoCronometro.mejorVuelta
   };

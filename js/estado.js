@@ -148,6 +148,7 @@ function guardarRecordLocalStorage(tiempo, idHabitacion = estadoCarro.idHabitaci
 // Estado del cronómetro de vueltas y checkpoints anti-trampas
 export const estadoCronometro = {
   vueltaActiva: false,
+  vuelta: 1,
   tiempoActual: 0,
   ultimaVuelta: null,
   mejorVuelta: leerRecordLocalStorage(estadoCarro.idHabitacion, estadoCarro.claseVehiculo),

@@ -43,6 +43,7 @@
   </div>
 
   <canvas id="lienzo-3d"></canvas>
+  <div id="capa-etiquetas-3d"></div>
 
   <!-- HUD compacto de conducción -->
   <div id="hud-conduccion">
@@ -86,6 +87,12 @@
       <span><b>R</b> Ir a la Meta</span>
       <span><b>T</b> Volver al Taller</span>
     </div>
+  </div>
+
+  <!-- Clasificación en vivo durante carreras online -->
+  <div id="hud-leaderboard" style="display:none">
+    <div class="titulo-leaderboard-hud">🏁 CLASIFICACIÓN EN VIVO</div>
+    <div id="lista-leaderboard-hud"></div>
   </div>
 
   <!-- Selector Arcade Superior de Clase Estilo Mario Kart (Modo Taller) -->
@@ -163,6 +170,34 @@
         </button>
       </div>
     </div>
+  </aside>
+
+  <!-- Panel Derecho Superior de Multijugador Online (Modo Taller) -->
+  <aside id="panel-multijugador">
+    <div class="cabecera-panel-red">
+      <span>🌐 MULTIJUGADOR ONLINE</span>
+      <span id="badge-modo-red" class="badge-red-solo">SOLO</span>
+    </div>
+    <div class="campo-apodo-red">
+      <label for="input-apodo-red">Apodo</label>
+      <input id="input-apodo-red" type="text" maxlength="20" placeholder="Piloto" />
+    </div>
+    <div id="vista-red-lobby">
+      <button id="btn-crear-sala" class="btn-red-primario">Crear Sala Online</button>
+      <div class="fila-unirse-red">
+        <input id="input-codigo-sala" type="text" maxlength="4" placeholder="CÓDIGO" />
+        <button id="btn-unirse-sala" class="btn-red-secundario">Unirse</button>
+      </div>
+    </div>
+    <div id="vista-red-activa" style="display:none">
+      <div class="cabecera-sala-activa">
+        <button id="codigo-sala-activo" title="Clic para copiar el código de sala">SALA: ----</button>
+        <span id="rol-sala-activo" class="rol-red">Invitado</span>
+      </div>
+      <div id="lista-jugadores-sala"></div>
+      <button id="btn-salir-sala" class="btn-red-salir">Salir de Sala</button>
+    </div>
+    <div id="aviso-red" class="aviso-red" role="status"></div>
   </aside>
 
   <!-- Panel Derecho de Estadísticas Comparativas Estilo Mario Kart -->

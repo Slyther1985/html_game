@@ -185,12 +185,17 @@ class MockAudioContext {
 }
 
 const windowListeners = new Map();
+const windowListenersAll = new Map();
 globalThis.window = {
   innerWidth: 1280,
   innerHeight: 720,
   devicePixelRatio: 1,
   AudioContext: MockAudioContext,
-  addEventListener(ev, fn) { windowListeners.set(ev, fn); }
+  addEventListener(ev, fn) {
+    windowListeners.set(ev, fn);
+    if (!windowListenersAll.has(ev)) windowListenersAll.set(ev, []);
+    windowListenersAll.get(ev).push(fn);
+  }
 };
 
 const domElements = new Map();
@@ -273,6 +278,14 @@ class MockVec {
   multiplyScalar(s) { this.x *= s; this.y *= s; this.z *= s; return this; }
   applyMatrix4() { return this; }
   lerp() { return this; }
+  project(cam) {
+    const cx = cam && cam.position ? cam.position.x : 0;
+    const cy = cam && cam.position ? cam.position.y : 0;
+    this.x = Math.max(-0.9, Math.min(0.9, (this.x - cx) * 0.05));
+    this.y = Math.max(-0.9, Math.min(0.9, (this.y - cy) * 0.05));
+    this.z = 0.2;
+    return this;
+  }
   getWorldPosition(target) { return target ? target.copy(this) : new MockVec(); }
 }
 class MockObj {
@@ -1706,6 +1719,8 @@ if (depsRed.some((t) => !permitidosRed.has(t))) {
 const eventosRedEmitidos = [];
 globalThis.window.dispatchEvent = (ev) => {
   eventosRedEmitidos.push({ type: ev.type, detail: ev.detail });
+  const lista = windowListenersAll.get(ev.type) || [];
+  lista.forEach((fn) => fn(ev));
   return true;
 };
 
@@ -1961,4 +1976,135 @@ if (resOffline.ok !== false || modEstado.estadoRed.modo !== 'solo') {
 }
 
 console.log('OK: Fase 2 Multijugador (server HTTP+WebSocket, js/red.js a 20 Hz, eventos red:*, GPU cleanup e integración en main.js) verificada.');
+
+// 4N. Verificación Fases 3 y 4 Multijugador: Lobby DOM, Parrilla Escalonada, Colisiones PvP, Etiquetas 3D y Leaderboard
+for (const idRedReq of [
+  'panel-multijugador', 'badge-modo-red', 'input-apodo-red', 'vista-red-lobby',
+  'btn-crear-sala', 'input-codigo-sala', 'btn-unirse-sala', 'vista-red-activa',
+  'codigo-sala-activo', 'rol-sala-activo', 'lista-jugadores-sala', 'btn-salir-sala',
+  'aviso-red', 'capa-etiquetas-3d', 'hud-leaderboard', 'lista-leaderboard-hud'
+]) {
+  if (!indexHtml.includes(`id="${idRedReq}"`)) {
+    throw new Error(`[4N] Falta elemento DOM '${idRedReq}' en index.html`);
+  }
+}
+for (const selRed of ['#panel-multijugador', '#capa-etiquetas-3d', '.etiqueta-jugador-3d', '#hud-leaderboard', '.fila-leaderboard-hud']) {
+  if (!cssText.includes(selRed)) {
+    throw new Error(`[4N] Falta selector CSS '${selRed}' en css/estilos.css`);
+  }
+}
+
+// Probar parrilla escalonada en dos columnas para slots 0..7 en modo online vs modo solo
+modUI.cambiarHabitacion('habitacion_andy');
+if (modEstado.estadoCarro.modoJuego === 'conduccion') modUI.alternarModoTallerConduccion();
+
+modEstado.estadoRed.modo = 'solo';
+modCond.reposicionarEnMeta();
+const xSolo = modEstado.fisicaCarro.x;
+const zSolo = modEstado.fisicaCarro.z;
+if (Math.abs(xSolo - -1.8) > 1e-4 || Math.abs(zSolo - 26.0) > 1e-4) {
+  throw new Error(`[4N] En modo solo reposicionarEnMeta() debe ubicar exactamente en meta (-1.8, 26.0), obtenido (${xSolo}, ${zSolo})`);
+}
+
+const posSlots = [];
+modEstado.estadoRed.modo = 'online';
+modEstado.estadoRed.conectado = true;
+for (const slot of [0, 1, 2, 7]) {
+  modEstado.estadoRed.slotParrilla = slot;
+  if (modEstado.estadoCarro.modoJuego !== 'taller') modUI.alternarModoTallerConduccion();
+  modUI.alternarModoTallerConduccion(); // Entrar a conducción debe posicionar en parrilla escalonada
+  posSlots.push({ slot, x: modEstado.fisicaCarro.x, z: modEstado.fisicaCarro.z });
+}
+const [s0, s1, s2, s7] = posSlots;
+if (!(s1.x < s0.x && Math.abs(s1.z - s0.z) > 1.5 && s2.x < s1.x && Math.abs(s2.z - s0.z) < 0.05 && s7.x < s2.x)) {
+  throw new Error(`[4N] Parrilla escalonada incorrecta: ${JSON.stringify(posSlots)}`);
+}
+
+// Probar colisión esférica entre vehículo local y rival en pista ponderada por pesoImpacto
+modRed.salirDeSala();
+modEstado.estadoRed.modo = 'online';
+modEstado.estadoRed.conectado = true;
+modEstado.estadoRed.miId = 'p_local_col';
+modEstado.estadoCarro.modoJuego = 'conduccion';
+globalThis._mockRayEstado = { esPista: true, tipoSuperficie: 'pista_asfalto', pendientePorX: 0, sueloFijo: 0.02 };
+
+const probarChoquePvP = (chasisLocal, chasisRemoto) => {
+  modEnganches.construirOActualizarCarroceria(chasisLocal, false);
+  modEstado.jugadoresRemotos.clear();
+  modRed.procesarMensajeRed({
+    tipo: 'jugador_entro',
+    jugador: {
+      id: 'p_rival_col',
+      apodo: 'Titan',
+      slotParrilla: 1,
+      enPista: true,
+      apariencia: { clase: 'coche', carroceria: chasisRemoto, color: 0x0066ff, piezas: {} }
+    }
+  });
+  const rem = modEstado.jugadoresRemotos.get('p_rival_col');
+  rem.grupoRaiz.position.set(10.0, 0.02, 10.0);
+  rem.posObjetivo.set(10.0, 0.02, 10.0);
+  rem.velActual = 0;
+
+  modEstado.fisicaCarro.x = 9.3;
+  modEstado.fisicaCarro.y = 0.02;
+  modEstado.fisicaCarro.z = 10.0;
+  modEstado.fisicaCarro.yaw = 0;
+  modEstado.fisicaCarro.anguloMovimiento = 0;
+  modEstado.fisicaCarro.velocidad = 7.0;
+  modEstado.fisicaCarro.enAire = false;
+  modEstado.teclasConduccion['KeyW'] = false;
+  modCond.actualizarFisicaConduccion(0.05);
+  const distDespues = Math.hypot(modEstado.fisicaCarro.x - 10.0, modEstado.fisicaCarro.z - 10.0);
+  return { distDespues, velDespues: modEstado.fisicaCarro.velocidad };
+};
+
+const choqueLigeroContraPesado = probarChoquePvP('carroceria_formula', 'carroceria_camioneta'); // 0.80 vs 1.45
+const choquePesadoContraLigero = probarChoquePvP('carroceria_camioneta', 'carroceria_formula'); // 1.45 vs 0.80
+if (choqueLigeroContraPesado.distDespues < 1.10 || choquePesadoContraLigero.distDespues < 1.10) {
+  throw new Error(`[4N] No se aplicó separación posicional en colisión PvP (${choqueLigeroContraPesado.distDespues.toFixed(2)})`);
+}
+if (choqueLigeroContraPesado.velDespues >= choquePesadoContraLigero.velDespues) {
+  throw new Error(`[4N] Transferencia de impulso no respetó pesoImpacto (ligero=${choqueLigeroContraPesado.velDespues.toFixed(2)}, pesado=${choquePesadoContraLigero.velDespues.toFixed(2)})`);
+}
+
+// Probar proyección 3D en #capa-etiquetas-3d y ordenamiento de #hud-leaderboard
+modEstado.jugadoresRemotos.clear();
+modRed.procesarMensajeRed({
+  tipo: 'jugador_entro',
+  jugador: { id: 'p_top', apodo: 'Ace', slotParrilla: 2, enPista: true, vuelta: 2, checkpointActual: 3, mejorVuelta: 19.2 }
+});
+modRed.procesarMensajeRed({
+  tipo: 'jugador_entro',
+  jugador: { id: 'p_cola', apodo: 'Novato', slotParrilla: 3, enPista: true, vuelta: 1, checkpointActual: 4, mejorVuelta: 25.0 }
+});
+modEstado.estadoCronometro.vuelta = 2;
+modEstado.estadoCronometro.checkpointActual = 1;
+modEsc.camara.position.set(0, 2, 10);
+
+modUI.actualizarPanelMultijugador();
+modUI.actualizarEtiquetasYLeaderboard();
+
+const capaEtiq = globalThis.document.getElementById('capa-etiquetas-3d');
+if (capaEtiq.children.length !== 2 || !String(capaEtiq.children[0].style.left).endsWith('px')) {
+  throw new Error(`[4N] #capa-etiquetas-3d debe proyectar 2 etiquetas con coordenadas px (tiene ${capaEtiq.children.length})`);
+}
+
+const listaLB = globalThis.document.getElementById('lista-leaderboard-hud');
+const ordenLB = listaLB.children.map((fila) => fila.children[1].textContent);
+if (ordenLB.length !== 3 || !ordenLB[0].includes('Ace') || !ordenLB[1].includes('(Tú)') || !ordenLB[2].includes('Novato')) {
+  throw new Error(`[4N] #hud-leaderboard mal ordenado: ${JSON.stringify(ordenLB)}`);
+}
+
+// Comprobar que main.js invoca actualizarEtiquetasYLeaderboard() y limpiar red
+if (!fs.readFileSync(path.join(jsDir, 'main.js'), 'utf8').includes('actualizarEtiquetasYLeaderboard()')) {
+  throw new Error('[4N] js/main.js debe invocar actualizarEtiquetasYLeaderboard()');
+}
+modRed.salirDeSala();
+modUI.actualizarEtiquetasYLeaderboard();
+if (capaEtiq.children.length !== 0) {
+  throw new Error('[4N] Al salir de sala, #capa-etiquetas-3d debe quedar vacía');
+}
+
+console.log('OK: Fases 3 y 4 Multijugador (Lobby, Parrilla escalonada 2 columnas, Colisiones PvP pesoImpacto, Etiquetas 3D y Leaderboard) verificadas.');
 console.log('=== VERIFICACIÓN COMPLETA EXITOSA ===');

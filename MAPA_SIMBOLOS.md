@@ -8,14 +8,14 @@
 | :--- | ---: | :--- |
 | `js/audio.js` | 743 | `inicializarAudioInteractivo` (L410), `alternarSilencio` (L425), `cambiarModoMusical` (L442), `actualizarAudioMotor` (L458), `actualizarAudioDerrape` (L496), `reproducirTurbo` (L521), `reproducirImpacto` (L535), `reproducirCheckpoint` (L577), `reproducirMeta` (L587), `reproducirEncajePieza` (L615), `reproducirQuitarPieza` (L623), `reproducirCambioColor` (L630), `seleccionarPistaMusicalPorId` (L637), `cambiarPistaConduccion` (L652), `actualizarMusicaAmbiental` (L668) |
 | `js/catalogoPiezas.js` | 3762 | `crearMaterialPintura` (L12), `crearMaterialCristalCabina` (L27), `agregarDetallesCarroceria` (L43), `crearInteriorDetallado` (L73), `TABLA_CARROCERIAS` (L510), `TABLA_PIEZAS` (L2357), `obtenerAtributosFinalesVehiculo` (L3695) |
-| `js/conduccion.js` | 1002 | `PERFILES_FISICA` (L46), `formatearTiempoMMSS` (L98), `actualizarHUDCronometro` (L137), `reiniciarCronometroVuelta` (L172), `obtenerInfoSuperficieEnPunto` (L321), `obtenerAlturaSuperficieEnPunto` (L350), `reposicionarEnMeta` (L357), `actualizarFisicaConduccion` (L406), `actualizarObstaculos` (L866), `actualizarCamaraConduccion` (L973) |
+| `js/conduccion.js` | 1093 | `PERFILES_FISICA` (L48), `formatearTiempoMMSS` (L100), `actualizarHUDCronometro` (L139), `reiniciarCronometroVuelta` (L174), `obtenerInfoSuperficieEnPunto` (L324), `obtenerAlturaSuperficieEnPunto` (L353), `reposicionarEnMeta` (L360), `actualizarFisicaConduccion` (L427), `actualizarObstaculos` (L957), `actualizarCamaraConduccion` (L1064) |
 | `js/config.js` | 29 | `URL_WS_PRODUCCION` (L1), `URL_WS_LOCAL` (L2), `TASA_ENVIO_HZ` (L3), `resolverUrlWebSocket` (L8), `CONFIG_RED` (L20) |
 | `js/constantes.js` | 78 | `CLASES_VEHICULO` (L1), `TOPE_STAT_UI` (L2), `IDS_HABITACIONES` (L3), `CATALOGO_HABITACIONES` (L10), `HABITACION_ANCHO` (L54), `HABITACION_LARGO` (L55), `HABITACION_ALTO` (L56), `ALFOMBRA_RADIO` (L57), `CANTIDAD_POLVO` (L58), `URLS_TEXTURAS` (L60), `PALETA_COLORES` (L68) |
 | `js/enganches.js` | 406 | `grupoJuguete` (L14), `dispararChispasEnEnganche` (L25), `animarSalidaYLiberar` (L65), `animarEntradaElastica` (L101), `colocarPiezaEnEnganche` (L130), `ensamblarGrupoVehiculo` (L188), `destruirVehiculoRemoto` (L299), `construirOActualizarCarroceria` (L320) |
 | `js/escenario.js` | 3319 | `lienzo` (L29), `escena` (L30), `grupoEscenarioActivo` (L33), `camara` (L36), `renderizador` (L44), `controles` (L62), `sistemaPolvo` (L72), `crearIluminacion` (L78), `construirHabitacionExpandida` (L313), `construirPistaDeCarreras` (L1416), `construirEscenarioAcuatico` (L1974), `construirEscenarioAtico` (L2409), `construirEscenarioHangar` (L2804), `crearHazYPolvoVentana` (L3212), `cargarEscenario` (L3264) |
-| `js/estado.js` | 176 | `estadoCarro` (L11), `fisicaCarro` (L70), `teclasConduccion` (L92), `nodosEnganches` (L94), `listaColisionadoresEnganches` (L95), `animacionesActivas` (L96), `chorrosChispasActivos` (L97), `mallasSuperficieConducible` (L100), `obstaculosHabitacion` (L102), `plataformasTurbo` (L105), `obstaculosDinamicos` (L106), `obstaculosMoviles` (L107), `trampasPista` (L108), `obtenerClaveRecord` (L115), `estadoCronometro` (L149), `checkpointsPista` (L162), `estadoRed` (L165), `jugadoresRemotos` (L175) |
-| `js/interfaz.js` | 1230 | `generarMiniaturasCatalogo` (L142), `actualizarPanelesMarioKart` (L323), `ciclarOpcionRanuraMK` (L489), `abrirModalCircuitosMK` (L534), `cerrarModalCircuitosMK` (L605), `cambiarClaseVehiculo` (L614), `cambiarHabitacion` (L682), `actualizarTextoEstado` (L745), `alternarModoTallerConduccion` (L775), `alternarCamaraConduccion` (L863), `renderizarBandeja` (L874), `configurarEventosInteraccion` (L1001) |
-| `js/main.js` | 183 | — (punto de entrada) |
+| `js/estado.js` | 177 | `estadoCarro` (L11), `fisicaCarro` (L70), `teclasConduccion` (L92), `nodosEnganches` (L94), `listaColisionadoresEnganches` (L95), `animacionesActivas` (L96), `chorrosChispasActivos` (L97), `mallasSuperficieConducible` (L100), `obstaculosHabitacion` (L102), `plataformasTurbo` (L105), `obstaculosDinamicos` (L106), `obstaculosMoviles` (L107), `trampasPista` (L108), `obtenerClaveRecord` (L115), `estadoCronometro` (L149), `checkpointsPista` (L163), `estadoRed` (L166), `jugadoresRemotos` (L176) |
+| `js/interfaz.js` | 1600 | `actualizarPanelMultijugador` (L186), `actualizarEtiquetasYLeaderboard` (L249), `generarMiniaturasCatalogo` (L375), `actualizarPanelesMarioKart` (L557), `ciclarOpcionRanuraMK` (L724), `abrirModalCircuitosMK` (L770), `cerrarModalCircuitosMK` (L841), `cambiarClaseVehiculo` (L850), `cambiarHabitacion` (L919), `actualizarTextoEstado` (L985), `alternarModoTallerConduccion` (L1015), `alternarCamaraConduccion` (L1110), `renderizarBandeja` (L1121), `configurarEventosInteraccion` (L1249) |
+| `js/main.js` | 185 | — (punto de entrada) |
 | `js/partituras.js` | 508 | `notaAFrecuencia` (L16), `IDS_PISTAS_CONDUCCION` (L41), `CATALOGO_PARTITURAS` (L49) |
 | `js/recursos.js` | 1498 | `cargadorTexturas` (L3), `bancoTexturas` (L6), `cacheMiniaturas` (L7), `crearCajaRedondeada` (L13), `liberarObjeto3D` (L57), `crearRespaldoMaderaCanvas` (L76), `crearRespaldoSpriteCanvas` (L116), `cargarTexturaSegura` (L134), `crearTexturaPapelTapiz` (L155), `crearTexturaAlfombra` (L212), `crearTexturaPistaAsfalto` (L250), `crearTexturaPianoCurva` (L287), `crearTexturaMetaCuadros` (L307), `crearTexturaBandaRodadura` (L330), `crearTexturaDiscoFreno` (L415), `crearTexturaTurboPad` (L496), `crearTexturaPosterPared` (L572), `crearTexturaLetraCubo` (L919), `crearTexturaPelotaLuxo` (L953), `crearTexturaTablero` (L981), `crearTexturaAgua` (L1101), `crearTexturaAzulejoPiscina` (L1136), `crearTexturaTierraCompactada` (L1169), `crearTexturaPisoHangar` (L1198), `crearVistaPreviaEscenario` (L1229), `crearTexturaTrampa` (L1353), `inicializarRecursos` (L1414) |
 | `js/red.js` | 533 | `obtenerAparienciaLocal` (L265), `crearSalaOnline` (L277), `unirseSalaOnline` (L295), `salirDeSala` (L314), `enviarApariencia` (L337), `notificarCambioHabitacion` (L349), `procesarMensajeRed` (L360), `actualizarRed` (L464) |
@@ -189,48 +189,48 @@
 | 3664 | `TABLA_PIEZAS` | `cola_booster_cohete` | Cola con Booster |
 
 ---
-## `js/conduccion.js` (1002 líneas)
+## `js/conduccion.js` (1093 líneas)
 
 ### Imports
 - **L1** desde `./constantes.js`: CATALOGO_HABITACIONES
-- **L2** desde `./estado.js`: estadoCarro, fisicaCarro, teclasConduccion, mallasSuperficieConducible, obstaculosHabitacion, nodosEnganches, plataformasTurbo, obstaculosDinamicos, obstaculosMoviles, trampasPista, estadoCronometro, checkpointsPista, obtenerClaveRecord
-- **L17** desde `./escenario.js`: camara, controles
-- **L18** desde `./catalogoPiezas.js`: TABLA_CARROCERIAS, obtenerAtributosFinalesVehiculo
-- **L19** desde `./enganches.js`: grupoJuguete, dispararChispasEnEnganche
-- **L20** desde `./audio.js`: actualizarAudioMotor, actualizarAudioDerrape, reproducirTurbo, reproducirImpacto, reproducirCheckpoint, reproducirMeta
+- **L2** desde `./estado.js`: estadoCarro, fisicaCarro, teclasConduccion, mallasSuperficieConducible, obstaculosHabitacion, nodosEnganches, plataformasTurbo, obstaculosDinamicos, obstaculosMoviles, trampasPista, estadoCronometro, checkpointsPista, obtenerClaveRecord, estadoRed, jugadoresRemotos
+- **L19** desde `./escenario.js`: camara, controles
+- **L20** desde `./catalogoPiezas.js`: TABLA_CARROCERIAS, obtenerAtributosFinalesVehiculo
+- **L21** desde `./enganches.js`: grupoJuguete, dispararChispasEnEnganche
+- **L22** desde `./audio.js`: actualizarAudioMotor, actualizarAudioDerrape, reproducirTurbo, reproducirImpacto, reproducirCheckpoint, reproducirMeta
 
 ### Exports
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 46 | `const` | `PERFILES_FISICA` | `PERFILES_FISICA` |
-| 98 | `function` | `formatearTiempoMMSS` | `formatearTiempoMMSS(segundos)` |
-| 137 | `function` | `actualizarHUDCronometro` | `actualizarHUDCronometro()` |
-| 172 | `function` | `reiniciarCronometroVuelta` | `reiniciarCronometroVuelta(activar = false)` |
-| 321 | `function` | `obtenerInfoSuperficieEnPunto` | `obtenerInfoSuperficieEnPunto(x, z, alturaReferencia)` |
-| 350 | `function` | `obtenerAlturaSuperficieEnPunto` | `obtenerAlturaSuperficieEnPunto(x, z, alturaReferencia)` |
-| 357 | `function` | `reposicionarEnMeta` | `reposicionarEnMeta()` |
-| 406 | `function` | `actualizarFisicaConduccion` | `actualizarFisicaConduccion(dt)` |
-| 866 | `function` | `actualizarObstaculos` | `actualizarObstaculos(dt, tiempoTotal)` |
-| 973 | `function` | `actualizarCamaraConduccion` | `actualizarCamaraConduccion(dt)` |
+| 48 | `const` | `PERFILES_FISICA` | `PERFILES_FISICA` |
+| 100 | `function` | `formatearTiempoMMSS` | `formatearTiempoMMSS(segundos)` |
+| 139 | `function` | `actualizarHUDCronometro` | `actualizarHUDCronometro()` |
+| 174 | `function` | `reiniciarCronometroVuelta` | `reiniciarCronometroVuelta(activar = false)` |
+| 324 | `function` | `obtenerInfoSuperficieEnPunto` | `obtenerInfoSuperficieEnPunto(x, z, alturaReferencia)` |
+| 353 | `function` | `obtenerAlturaSuperficieEnPunto` | `obtenerAlturaSuperficieEnPunto(x, z, alturaReferencia)` |
+| 360 | `function` | `reposicionarEnMeta` | `reposicionarEnMeta()` |
+| 427 | `function` | `actualizarFisicaConduccion` | `actualizarFisicaConduccion(dt)` |
+| 957 | `function` | `actualizarObstaculos` | `actualizarObstaculos(dt, tiempoTotal)` |
+| 1064 | `function` | `actualizarCamaraConduccion` | `actualizarCamaraConduccion(dt)` |
 
 ### Símbolos Internos (Nivel Superior)
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 29 | `const` | `raycasterSuelo` | `raycasterSuelo` |
-| 30 | `const` | `vectorAbajo` | `vectorAbajo` |
-| 31 | `let` | `acumuladorChispasDerrape` | `acumuladorChispasDerrape` |
-| 32 | `let` | `enPistaActual` | `enPistaActual` |
-| 33 | `let` | `tipoSuperficieActual` | `tipoSuperficieActual` |
-| 34 | `let` | `temporizadorVibracionAudio` | `temporizadorVibracionAudio` |
-| 35 | `let` | `ultimoPitchTerreno` | `ultimoPitchTerreno` |
-| 36 | `let` | `tiempoHidrodinamico` | `tiempoHidrodinamico` |
-| 37 | `let` | `tipoTrampaActiva` | `tipoTrampaActiva` |
-| 39 | `function` | `calcularFactorAfinidadMedio` | `calcularFactorAfinidadMedio(claseVehiculo, tipoSuperficie, enAire, idHabitacion)` |
-| 118 | `function` | `reiniciarLucesCheckpoints` | `reiniciarLucesCheckpoints()` |
-| 186 | `function` | `actualizarCronometroYCheckpoints` | `actualizarCronometroYCheckpoints(dt, xAnterior)` |
-| 279 | `function` | `diferenciaAngular` | `diferenciaAngular(objetivo, actual)` |
-| 286 | `function` | `actualizarInsigniaEstadoHUD` | `actualizarInsigniaEstadoHUD()` |
-| 308 | `function` | `cancelarDerrapePorChoque` | `cancelarDerrapePorChoque()` |
+| 31 | `const` | `raycasterSuelo` | `raycasterSuelo` |
+| 32 | `const` | `vectorAbajo` | `vectorAbajo` |
+| 33 | `let` | `acumuladorChispasDerrape` | `acumuladorChispasDerrape` |
+| 34 | `let` | `enPistaActual` | `enPistaActual` |
+| 35 | `let` | `tipoSuperficieActual` | `tipoSuperficieActual` |
+| 36 | `let` | `temporizadorVibracionAudio` | `temporizadorVibracionAudio` |
+| 37 | `let` | `ultimoPitchTerreno` | `ultimoPitchTerreno` |
+| 38 | `let` | `tiempoHidrodinamico` | `tiempoHidrodinamico` |
+| 39 | `let` | `tipoTrampaActiva` | `tipoTrampaActiva` |
+| 41 | `function` | `calcularFactorAfinidadMedio` | `calcularFactorAfinidadMedio(claseVehiculo, tipoSuperficie, enAire, idHabitacion)` |
+| 120 | `function` | `reiniciarLucesCheckpoints` | `reiniciarLucesCheckpoints()` |
+| 188 | `function` | `actualizarCronometroYCheckpoints` | `actualizarCronometroYCheckpoints(dt, xAnterior)` |
+| 282 | `function` | `diferenciaAngular` | `diferenciaAngular(objetivo, actual)` |
+| 289 | `function` | `actualizarInsigniaEstadoHUD` | `actualizarInsigniaEstadoHUD()` |
+| 311 | `function` | `cancelarDerrapePorChoque` | `cancelarDerrapePorChoque()` |
 
 ---
 ## `js/config.js` (29 líneas)
@@ -347,7 +347,7 @@
 | 1943 | `function` | `generarNodosCircuitoCerrado` | `generarNodosCircuitoCerrado(tramosCtrl, anchoDefecto, opcionesPorTramo = null)` |
 
 ---
-## `js/estado.js` (176 líneas)
+## `js/estado.js` (177 líneas)
 
 ### Imports
 - **L1** desde `./constantes.js`: PALETA_COLORES
@@ -370,9 +370,9 @@
 | 108 | `const` | `trampasPista` | `trampasPista` |
 | 115 | `function` | `obtenerClaveRecord` | `obtenerClaveRecord(idHabitacion = estadoCarro.idHabitacion, claseVehiculo = estadoCarro.claseVehiculo)` |
 | 149 | `const` | `estadoCronometro` | `estadoCronometro` |
-| 162 | `const` | `checkpointsPista` | `checkpointsPista` |
-| 165 | `const` | `estadoRed` | `estadoRed` |
-| 175 | `const` | `jugadoresRemotos` | `jugadoresRemotos` |
+| 163 | `const` | `checkpointsPista` | `checkpointsPista` |
+| 166 | `const` | `estadoRed` | `estadoRed` |
+| 176 | `const` | `jugadoresRemotos` | `jugadoresRemotos` |
 
 ### Símbolos Internos (Nivel Superior)
 | Línea | Tipo | Símbolo | Firma |
@@ -383,76 +383,100 @@
 | 136 | `function` | `guardarRecordLocalStorage` | `guardarRecordLocalStorage(tiempo, idHabitacion = estadoCarro.idHabitacion, claseVehiculo = estadoCarro.claseVehiculo)` |
 
 ---
-## `js/interfaz.js` (1230 líneas)
+## `js/interfaz.js` (1600 líneas)
 
 ### Imports
 - **L1** desde `./constantes.js`: PALETA_COLORES, TOPE_STAT_UI, CLASES_VEHICULO, IDS_HABITACIONES, CATALOGO_HABITACIONES
-- **L2** desde `./estado.js`: estadoCarro, fisicaCarro, teclasConduccion, nodosEnganches, listaColisionadoresEnganches, estadoCronometro
-- **L10** desde `./recursos.js`: cacheMiniaturas, liberarObjeto3D, crearVistaPreviaEscenario
-- **L11** desde `./escenario.js`: lienzo, camara, renderizador, controles, cargarEscenario
-- **L12** desde `./catalogoPiezas.js`: TABLA_CARROCERIAS, TABLA_PIEZAS, obtenerAtributosFinalesVehiculo
-- **L13** desde `./enganches.js`: grupoJuguete, colocarPiezaEnEnganche, construirOActualizarCarroceria, dispararChispasEnEnganche
-- **L19** desde `./conduccion.js`: reposicionarEnMeta, reiniciarCronometroVuelta, actualizarHUDCronometro, formatearTiempoMMSS
-- **L25** desde `./audio.js`: alternarSilencio, cambiarModoMusical, cambiarPistaConduccion, seleccionarPistaMusicalPorId, reproducirCambioColor, inicializarAudioInteractivo
+- **L2** desde `./estado.js`: estadoCarro, fisicaCarro, teclasConduccion, nodosEnganches, listaColisionadoresEnganches, estadoCronometro, estadoRed, jugadoresRemotos
+- **L12** desde `./recursos.js`: cacheMiniaturas, liberarObjeto3D, crearVistaPreviaEscenario
+- **L13** desde `./escenario.js`: lienzo, camara, renderizador, controles, cargarEscenario
+- **L14** desde `./catalogoPiezas.js`: TABLA_CARROCERIAS, TABLA_PIEZAS, obtenerAtributosFinalesVehiculo
+- **L15** desde `./enganches.js`: grupoJuguete, colocarPiezaEnEnganche, construirOActualizarCarroceria, dispararChispasEnEnganche
+- **L21** desde `./conduccion.js`: reposicionarEnMeta, reiniciarCronometroVuelta, actualizarHUDCronometro, formatearTiempoMMSS
+- **L27** desde `./audio.js`: alternarSilencio, cambiarModoMusical, cambiarPistaConduccion, seleccionarPistaMusicalPorId, reproducirCambioColor, inicializarAudioInteractivo
+- **L35** desde `./red.js`: crearSalaOnline, unirseSalaOnline, salirDeSala, enviarApariencia, notificarCambioHabitacion
 
 ### Exports
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 142 | `function` | `generarMiniaturasCatalogo` | `generarMiniaturasCatalogo()` |
-| 323 | `function` | `actualizarPanelesMarioKart` | `actualizarPanelesMarioKart()` |
-| 489 | `function` | `ciclarOpcionRanuraMK` | `ciclarOpcionRanuraMK(ranuraId, direccion = 1)` |
-| 534 | `function` | `abrirModalCircuitosMK` | `abrirModalCircuitosMK()` |
-| 605 | `function` | `cerrarModalCircuitosMK` | `cerrarModalCircuitosMK()` |
-| 614 | `function` | `cambiarClaseVehiculo` | `cambiarClaseVehiculo(claseDestino = null)` |
-| 682 | `function` | `cambiarHabitacion` | `cambiarHabitacion(idOpcional = null)` |
-| 745 | `function` | `actualizarTextoEstado` | `actualizarTextoEstado()` |
-| 775 | `function` | `alternarModoTallerConduccion` | `alternarModoTallerConduccion()` |
-| 863 | `function` | `alternarCamaraConduccion` | `alternarCamaraConduccion()` |
-| 874 | `function` | `renderizarBandeja` | `renderizarBandeja(categoria)` |
-| 1001 | `function` | `configurarEventosInteraccion` | `configurarEventosInteraccion()` |
+| 186 | `function` | `actualizarPanelMultijugador` | `actualizarPanelMultijugador()` |
+| 249 | `function` | `actualizarEtiquetasYLeaderboard` | `actualizarEtiquetasYLeaderboard()` |
+| 375 | `function` | `generarMiniaturasCatalogo` | `generarMiniaturasCatalogo()` |
+| 557 | `function` | `actualizarPanelesMarioKart` | `actualizarPanelesMarioKart()` |
+| 724 | `function` | `ciclarOpcionRanuraMK` | `ciclarOpcionRanuraMK(ranuraId, direccion = 1)` |
+| 770 | `function` | `abrirModalCircuitosMK` | `abrirModalCircuitosMK()` |
+| 841 | `function` | `cerrarModalCircuitosMK` | `cerrarModalCircuitosMK()` |
+| 850 | `function` | `cambiarClaseVehiculo` | `cambiarClaseVehiculo(claseDestino = null)` |
+| 919 | `function` | `cambiarHabitacion` | `cambiarHabitacion(idOpcional = null, origenRed = false)` |
+| 985 | `function` | `actualizarTextoEstado` | `actualizarTextoEstado()` |
+| 1015 | `function` | `alternarModoTallerConduccion` | `alternarModoTallerConduccion()` |
+| 1110 | `function` | `alternarCamaraConduccion` | `alternarCamaraConduccion()` |
+| 1121 | `function` | `renderizarBandeja` | `renderizarBandeja(categoria)` |
+| 1249 | `function` | `configurarEventosInteraccion` | `configurarEventosInteraccion()` |
 
 ### Símbolos Internos (Nivel Superior)
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 34 | `const` | `ETIQUETAS_CLASE` | `ETIQUETAS_CLASE` |
-| 41 | `const` | `PESTANAS_POR_CLASE` | `PESTANAS_POR_CLASE` |
-| 68 | `const` | `CATEGORIAS_AGRUPADAS` | `CATEGORIAS_AGRUPADAS` |
-| 73 | `const` | `RANURAS_MK_POR_CLASE` | `RANURAS_MK_POR_CLASE` |
-| 102 | `const` | `DESCRIPCIONES_SUPERFICIE_HAB` | `DESCRIPCIONES_SUPERFICIE_HAB` |
-| 109 | `let` | `categoriaActiva` | `categoriaActiva` |
-| 110 | `let` | `ranuraMKActiva` | `ranuraMKActiva` |
-| 111 | `let` | `subRanuraSecundariaIdx` | `subRanuraSecundariaIdx` |
-| 113 | `const` | `barraEstado` | `barraEstado` |
-| 114 | `const` | `contenedorItems` | `contenedorItems` |
-| 115 | `const` | `bandejaInferior` | `bandejaInferior` |
-| 116 | `const` | `hudConduccion` | `hudConduccion` |
-| 117 | `const` | `btnModoRuedas` | `btnModoRuedas` |
-| 118 | `const` | `btnQuitar` | `btnQuitar` |
-| 119 | `const` | `btnAlternarModo` | `btnAlternarModo` |
-| 120 | `const` | `btnCamara` | `btnCamara` |
-| 121 | `const` | `btnAudio` | `btnAudio` |
-| 122 | `const` | `btnPista` | `btnPista` |
-| 123 | `const` | `btnClaseVehiculo` | `btnClaseVehiculo` |
-| 124 | `const` | `btnHabitacion` | `btnHabitacion` |
-| 125 | `const` | `altitudHud` | `altitudHud` |
-| 126 | `const` | `guiaVueloHud` | `guiaVueloHud` |
-| 129 | `const` | `selectorClaseMK` | `selectorClaseMK` |
-| 130 | `const` | `panelPersonalizacionMK` | `panelPersonalizacionMK` |
-| 131 | `const` | `panelStatsMK` | `panelStatsMK` |
-| 132 | `const` | `modalCircuitosMK` | `modalCircuitosMK` |
-| 133 | `const` | `gridCircuitosMK` | `gridCircuitosMK` |
-| 134 | `const` | `btnAbrirCopasMK` | `btnAbrirCopasMK` |
-| 135 | `const` | `btnCopasMK` | `btnCopasMK` |
-| 136 | `const` | `btnCerrarModalMK` | `btnCerrarModalMK` |
-| 202 | `function` | `actualizarBotonesClaseYHUD` | `actualizarBotonesClaseYHUD()` |
-| 242 | `function` | `actualizarNombreChasisHUD` | `actualizarNombreChasisHUD()` |
-| 249 | `function` | `formatearBonoPieza` | `formatearBonoPieza(mod)` |
-| 258 | `function` | `obtenerListaYActivaPorCategoria` | `obtenerListaYActivaPorCategoria(categoria)` |
-| 278 | `function` | `aplicarSeleccionItemTaller` | `aplicarSeleccionItemTaller(pieza)` |
-| 671 | `function` | `actualizarTextoBtnHabitacion` | `actualizarTextoBtnHabitacion()` |
+| 43 | `const` | `ETIQUETAS_CLASE` | `ETIQUETAS_CLASE` |
+| 50 | `const` | `PESTANAS_POR_CLASE` | `PESTANAS_POR_CLASE` |
+| 77 | `const` | `CATEGORIAS_AGRUPADAS` | `CATEGORIAS_AGRUPADAS` |
+| 82 | `const` | `RANURAS_MK_POR_CLASE` | `RANURAS_MK_POR_CLASE` |
+| 111 | `const` | `DESCRIPCIONES_SUPERFICIE_HAB` | `DESCRIPCIONES_SUPERFICIE_HAB` |
+| 118 | `let` | `categoriaActiva` | `categoriaActiva` |
+| 119 | `let` | `ranuraMKActiva` | `ranuraMKActiva` |
+| 120 | `let` | `subRanuraSecundariaIdx` | `subRanuraSecundariaIdx` |
+| 122 | `const` | `barraEstado` | `barraEstado` |
+| 123 | `const` | `contenedorItems` | `contenedorItems` |
+| 124 | `const` | `bandejaInferior` | `bandejaInferior` |
+| 125 | `const` | `hudConduccion` | `hudConduccion` |
+| 126 | `const` | `btnModoRuedas` | `btnModoRuedas` |
+| 127 | `const` | `btnQuitar` | `btnQuitar` |
+| 128 | `const` | `btnAlternarModo` | `btnAlternarModo` |
+| 129 | `const` | `btnCamara` | `btnCamara` |
+| 130 | `const` | `btnAudio` | `btnAudio` |
+| 131 | `const` | `btnPista` | `btnPista` |
+| 132 | `const` | `btnClaseVehiculo` | `btnClaseVehiculo` |
+| 133 | `const` | `btnHabitacion` | `btnHabitacion` |
+| 134 | `const` | `altitudHud` | `altitudHud` |
+| 135 | `const` | `guiaVueloHud` | `guiaVueloHud` |
+| 138 | `const` | `selectorClaseMK` | `selectorClaseMK` |
+| 139 | `const` | `panelPersonalizacionMK` | `panelPersonalizacionMK` |
+| 140 | `const` | `panelStatsMK` | `panelStatsMK` |
+| 141 | `const` | `modalCircuitosMK` | `modalCircuitosMK` |
+| 142 | `const` | `gridCircuitosMK` | `gridCircuitosMK` |
+| 143 | `const` | `btnAbrirCopasMK` | `btnAbrirCopasMK` |
+| 144 | `const` | `btnCopasMK` | `btnCopasMK` |
+| 145 | `const` | `btnCerrarModalMK` | `btnCerrarModalMK` |
+| 148 | `const` | `CLAVE_APODO_LOCAL` | `CLAVE_APODO_LOCAL` |
+| 149 | `const` | `panelMultijugador` | `panelMultijugador` |
+| 150 | `const` | `badgeModoRed` | `badgeModoRed` |
+| 151 | `const` | `inputApodoRed` | `inputApodoRed` |
+| 152 | `const` | `vistaRedLobby` | `vistaRedLobby` |
+| 153 | `const` | `btnCrearSala` | `btnCrearSala` |
+| 154 | `const` | `inputCodigoSala` | `inputCodigoSala` |
+| 155 | `const` | `btnUnirseSala` | `btnUnirseSala` |
+| 156 | `const` | `vistaRedActiva` | `vistaRedActiva` |
+| 157 | `const` | `codigoSalaActivo` | `codigoSalaActivo` |
+| 158 | `const` | `rolSalaActivo` | `rolSalaActivo` |
+| 159 | `const` | `listaJugadoresSala` | `listaJugadoresSala` |
+| 160 | `const` | `btnSalirSala` | `btnSalirSala` |
+| 161 | `const` | `avisoRed` | `avisoRed` |
+| 162 | `const` | `capaEtiquetas3D` | `capaEtiquetas3D` |
+| 163 | `const` | `hudLeaderboard` | `hudLeaderboard` |
+| 164 | `const` | `listaLeaderboardHud` | `listaLeaderboardHud` |
+| 166 | `const` | `etiquetasDomPorId` | `etiquetasDomPorId` |
+| 167 | `let` | `timerAvisoRed` | `timerAvisoRed` |
+| 168 | `let` | `ultimoHtmlLeaderboard` | `ultimoHtmlLeaderboard` |
+| 170 | `function` | `mostrarAvisoRed` | `mostrarAvisoRed(mensaje, esError = false)` |
+| 435 | `function` | `actualizarBotonesClaseYHUD` | `actualizarBotonesClaseYHUD()` |
+| 475 | `function` | `actualizarNombreChasisHUD` | `actualizarNombreChasisHUD()` |
+| 482 | `function` | `formatearBonoPieza` | `formatearBonoPieza(mod)` |
+| 491 | `function` | `obtenerListaYActivaPorCategoria` | `obtenerListaYActivaPorCategoria(categoria)` |
+| 511 | `function` | `aplicarSeleccionItemTaller` | `aplicarSeleccionItemTaller(pieza)` |
+| 908 | `function` | `actualizarTextoBtnHabitacion` | `actualizarTextoBtnHabitacion()` |
 
 ---
-## `js/main.js` (183 líneas)
+## `js/main.js` (185 líneas)
 
 ### Imports
 - **L1** desde `./constantes.js`: CATALOGO_HABITACIONES
@@ -461,9 +485,9 @@
 - **L10** desde `./escenario.js`: escena, camara, renderizador, controles, sistemaPolvo, cargarEscenario
 - **L18** desde `./enganches.js`: construirOActualizarCarroceria
 - **L19** desde `./conduccion.js`: actualizarFisicaConduccion, actualizarCamaraConduccion, actualizarObstaculos
-- **L20** desde `./interfaz.js`: generarMiniaturasCatalogo, configurarEventosInteraccion, renderizarBandeja
-- **L25** desde `./audio.js`: actualizarMusicaAmbiental, actualizarAudioMotor
-- **L26** desde `./red.js`: actualizarRed
+- **L20** desde `./interfaz.js`: generarMiniaturasCatalogo, configurarEventosInteraccion, renderizarBandeja, actualizarEtiquetasYLeaderboard
+- **L26** desde `./audio.js`: actualizarMusicaAmbiental, actualizarAudioMotor
+- **L27** desde `./red.js`: actualizarRed
 
 ### Exports
 - Sin exports (módulo de arranque).
@@ -471,9 +495,9 @@
 ### Símbolos Internos (Nivel Superior)
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 28 | `let` | `tiempoAnterior` | `tiempoAnterior` |
-| 35 | `function` | `actualizarEscena` | `actualizarEscena(dt, tiempoTotal)` |
-| 166 | `function` | `buclePrincipal` | `buclePrincipal(ahora)` |
+| 29 | `let` | `tiempoAnterior` | `tiempoAnterior` |
+| 36 | `function` | `actualizarEscena` | `actualizarEscena(dt, tiempoTotal)` |
+| 168 | `function` | `buclePrincipal` | `buclePrincipal(ahora)` |
 
 ---
 ## `js/partituras.js` (508 líneas)

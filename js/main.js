@@ -20,7 +20,8 @@ import { actualizarFisicaConduccion, actualizarCamaraConduccion, actualizarObsta
 import {
   generarMiniaturasCatalogo,
   configurarEventosInteraccion,
-  renderizarBandeja
+  renderizarBandeja,
+  actualizarEtiquetasYLeaderboard
 } from './interfaz.js';
 import { actualizarMusicaAmbiental, actualizarAudioMotor } from './audio.js';
 import { actualizarRed } from './red.js';
@@ -68,6 +69,7 @@ function actualizarEscena(dt, tiempoTotal) {
 
   actualizarMusicaAmbiental(dt, estadoCarro.modoJuego, fisicaCarro.tiempoTurbo > 0);
   actualizarRed(dt);
+  actualizarEtiquetasYLeaderboard();
 
   // Animación UV de chevrones luminosos en Boost Pads y obstáculos de pista
   if (bancoTexturas.texturaTurboPad) {

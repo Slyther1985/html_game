@@ -566,7 +566,7 @@ body {
 /* Panel Derecho de Estadísticas Comparativas (#panel-stats-mk) */
 #panel-stats-mk {
   position: fixed;
-  top: 126px;
+  top: 344px;
   right: 18px;
   width: min(92vw, 316px);
   display: flex;
@@ -1021,4 +1021,288 @@ body {
   border-radius: 50%;
   border: 3px solid rgba(0, 0, 0, 0.15);
   box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.45);
+}
+/* Etiquetas Flotantes 3D de Jugadores Remotos (#capa-etiquetas-3d) */
+#capa-etiquetas-3d {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 15;
+}
+.etiqueta-jugador-3d {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.86);
+  color: #f8fafc;
+  border: 1.5px solid #38bdf8;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+}
+.etiqueta-jugador-3d .estado-tag {
+  font-size: 9px;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.25);
+  color: #6ee7b7;
+}
+.etiqueta-jugador-3d.en-taller .estado-tag {
+  background: rgba(251, 191, 36, 0.22);
+  color: #fde68a;
+}
+/* Panel Compacto de Multijugador (#panel-multijugador) */
+#panel-multijugador {
+  position: fixed;
+  top: 126px;
+  right: 18px;
+  width: min(92vw, 316px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 11px 13px;
+  background: rgba(15, 23, 42, 0.90);
+  color: #f8fafc;
+  border: 2px solid #334155;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  z-index: 23;
+  backdrop-filter: blur(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+#panel-multijugador.oculta {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(30px);
+}
+.cabecera-panel-red {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  color: #38bdf8;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 5px;
+}
+.badge-red-solo {
+  font-size: 9px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #334155;
+  color: #cbd5e1;
+}
+.badge-red-solo.online {
+  background: rgba(16, 185, 129, 0.24);
+  border: 1px solid #10b981;
+  color: #34d399;
+}
+.campo-apodo-red {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #cbd5e1;
+}
+.campo-apodo-red input,
+.fila-unirse-red input {
+  flex: 1;
+  min-width: 0;
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1.5px solid #475569;
+  border-radius: 9px;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  outline: none;
+}
+.campo-apodo-red input:focus,
+.fila-unirse-red input:focus {
+  border-color: #38bdf8;
+}
+#vista-red-lobby {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.fila-unirse-red {
+  display: flex;
+  gap: 6px;
+}
+.fila-unirse-red input {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.btn-red-primario,
+.btn-red-secundario,
+.btn-red-salir {
+  border: none;
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.12s ease;
+}
+.btn-red-primario {
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  color: #ffffff;
+}
+.btn-red-secundario {
+  background: #334155;
+  color: #f8fafc;
+  border: 1.5px solid #475569;
+}
+.btn-red-salir {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1.5px solid rgba(239, 68, 68, 0.5);
+}
+.btn-red-primario:hover,
+.btn-red-secundario:hover,
+.btn-red-salir:hover {
+  filter: brightness(1.12);
+}
+#vista-red-activa {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cabecera-sala-activa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+#codigo-sala-activo {
+  background: rgba(56, 189, 248, 0.16);
+  border: 1.5px solid #38bdf8;
+  color: #7dd3fc;
+  border-radius: 9px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+}
+.rol-red {
+  font-size: 10px;
+  font-weight: 900;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.2);
+  color: #fde047;
+}
+#lista-jugadores-sala {
+  max-height: 76px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fila-jugador-sala {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 3px 7px;
+  border-radius: 7px;
+  background: rgba(30, 41, 59, 0.8);
+  font-size: 11px;
+  font-weight: 700;
+}
+.estado-jugador-sala {
+  font-size: 9px;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.18);
+  color: #38bdf8;
+}
+.estado-jugador-sala.pista {
+  background: rgba(16, 185, 129, 0.22);
+  color: #34d399;
+}
+.aviso-red {
+  display: none;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.16);
+  color: #6ee7b7;
+}
+.aviso-red.visible {
+  display: block;
+}
+.aviso-red.error {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+/* Clasificación en vivo (#hud-leaderboard) */
+#hud-leaderboard {
+  position: fixed;
+  top: 76px;
+  right: 18px;
+  width: min(88vw, 270px);
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.86);
+  color: #f8fafc;
+  border: 2px solid #334155;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(6px);
+  z-index: 25;
+}
+.titulo-leaderboard-hud {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+  color: #fbbf24;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+#lista-leaderboard-hud {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fila-leaderboard-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 7px;
+  border-radius: 7px;
+  background: rgba(30, 41, 59, 0.78);
+  font-size: 11px;
+  font-weight: 700;
+}
+.fila-leaderboard-hud.propio {
+  border: 1px solid #38bdf8;
+  background: rgba(14, 165, 233, 0.18);
+}
+.pos-leaderboard-hud {
+  font-weight: 900;
+  color: #fbbf24;
+  min-width: 22px;
+}
+.meta-leaderboard-hud {
+  font-size: 10px;
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
 }

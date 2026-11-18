@@ -12,7 +12,9 @@ import {
   trampasPista,
   estadoCronometro,
   checkpointsPista,
-  obtenerClaveRecord
+  obtenerClaveRecord,
+  estadoRed,
+  jugadoresRemotos
 } from './estado.js';
 import { camara, controles } from './escenario.js';
 import { TABLA_CARROCERIAS, obtenerAtributosFinalesVehiculo } from './catalogoPiezas.js';
@@ -265,6 +267,7 @@ function actualizarCronometroYCheckpoints(dt, xAnterior) {
         }
       }
       reproducirMeta(esNuevoRecord);
+      estadoCronometro.vuelta = (estadoCronometro.vuelta || 1) + 1;
     }
     reiniciarCronometroVuelta(true);
     return;
@@ -357,15 +360,28 @@ export function obtenerAlturaSuperficieEnPunto(x, z, alturaReferencia) {
 export function reposicionarEnMeta() {
   const habActiva = CATALOGO_HABITACIONES[estadoCarro.idHabitacion] || CATALOGO_HABITACIONES.habitacion_andy;
   const meta = habActiva.meta;
+  const yawMeta = meta.yaw || 0;
 
-  fisicaCarro.x = meta.x;
+  let posX = meta.x;
+  let posZ = meta.z;
+  if (estadoRed.modo === 'online') {
+    const slot = Math.max(0, Math.min(7, Number(estadoRed.slotParrilla) || 0));
+    const fila = Math.floor(slot / 2);
+    const columna = slot % 2;
+    const offsetLongitudinal = -(fila * 1.65 + columna * 0.75);
+    const offsetLateral = columna === 0 ? -0.95 : 0.95;
+    posX += Math.cos(yawMeta) * offsetLongitudinal + Math.sin(yawMeta) * offsetLateral;
+    posZ += -Math.sin(yawMeta) * offsetLongitudinal + Math.cos(yawMeta) * offsetLateral;
+  }
+
+  fisicaCarro.x = posX;
   fisicaCarro.y = meta.y;
-  fisicaCarro.z = meta.z;
+  fisicaCarro.z = posZ;
   fisicaCarro.altitudVuelo = 0;
   fisicaCarro.velocidad = 0;
   fisicaCarro.velY = 0;
-  fisicaCarro.yaw = meta.yaw || 0;
-  fisicaCarro.anguloMovimiento = meta.yaw || 0;
+  fisicaCarro.yaw = yawMeta;
+  fisicaCarro.anguloMovimiento = yawMeta;
   fisicaCarro.pitch = 0;
   fisicaCarro.roll = 0;
   fisicaCarro.enAire = false;
@@ -385,6 +401,10 @@ export function reposicionarEnMeta() {
   tiempoHidrodinamico = 0;
   tipoTrampaActiva = null;
 
+  if (grupoJuguete) {
+    grupoJuguete.position.set(fisicaCarro.x, fisicaCarro.y, fisicaCarro.z);
+    grupoJuguete.rotation.set(0, fisicaCarro.yaw, 0);
+  }
   const volanteCabina = grupoJuguete.getObjectByName('volanteCabina');
   if (volanteCabina) volanteCabina.rotation.z = 0;
 
@@ -394,9 +414,10 @@ export function reposicionarEnMeta() {
   }
   const elAlt = document.getElementById('altitud-hud');
   if (elAlt) elAlt.textContent = 'ALT: 0.0 m';
+  estadoCronometro.vuelta = 1;
   reiniciarCronometroVuelta(false);
   actualizarInsigniaEstadoHUD();
-  dispararChispasEnEnganche(new THREE.Vector3(meta.x, meta.y + 0.225, meta.z));
+  dispararChispasEnEnganche(new THREE.Vector3(posX, meta.y + 0.225, posZ));
 }
 
 /**
@@ -643,6 +664,76 @@ export function actualizarFisicaConduccion(dt) {
         if (velImpacto > 0.35) reproducirImpacto(velImpacto / Math.max(1, velMaxBase), 'muro');
       }
     });
+  }
+
+  // Colisión esférica entre vehículos remotos en pista ponderada por pesoImpacto
+  if (jugadoresRemotos.size > 0) {
+    const pesoLocal = atrib.pesoImpacto || (defBase.atributos && defBase.atributos.pesoImpacto) || 1.0;
+    const radioColisionPvP = 1.15;
+
+    for (const rem of jugadoresRemotos.values()) {
+      if (!rem || rem.enPista !== true || !rem.grupoRaiz) continue;
+      const rx = rem.grupoRaiz.position.x;
+      const ry = rem.grupoRaiz.position.y;
+      const rz = rem.grupoRaiz.position.z;
+      if (Math.abs(fisicaCarro.y - ry) >= 0.95) continue;
+
+      const dx = nuevoX - rx;
+      const dz = nuevoZ - rz;
+      const dist = Math.hypot(dx, dz);
+      if (dist < radioColisionPvP) {
+        const nx = dist > 0.001 ? dx / dist : Math.cos(fisicaCarro.yaw || 0);
+        const nz = dist > 0.001 ? dz / dist : -Math.sin(fisicaCarro.yaw || 0);
+        const idChasisRem = rem.apariencia && rem.apariencia.carroceria;
+        const defRem = idChasisRem ? TABLA_CARROCERIAS.find((b) => b.id === idChasisRem) : null;
+        const pesoRemoto = (defRem && defRem.atributos && defRem.atributos.pesoImpacto) || 1.0;
+        const factorPesoLocal = pesoRemoto / Math.max(0.1, pesoLocal + pesoRemoto);
+
+        // Separación posicional inmediata para evitar superposición de mallas
+        nuevoX = rx + nx * radioColisionPvP;
+        nuevoZ = rz + nz * radioColisionPvP;
+
+        // Transferencia elástica de impulso según masa de ambos vehículos
+        const yawRem = (rem.rotObjetivo && rem.rotObjetivo.yaw) || rem.grupoRaiz.rotation.y || 0;
+        const velRem = rem.velActual || 0;
+        const vxR = Math.cos(yawRem) * velRem;
+        const vzR = -Math.sin(yawRem) * velRem;
+        let vxL = Math.cos(fisicaCarro.anguloMovimiento) * fisicaCarro.velocidad;
+        let vzL = -Math.sin(fisicaCarro.anguloMovimiento) * fisicaCarro.velocidad;
+
+        const velRelN = (vxL - vxR) * nx + (vzL - vzR) * nz;
+        if (velRelN < 0) {
+          const restitucion = 0.85;
+          const jImpulso = -(1 + restitucion) * velRelN * factorPesoLocal;
+          vxL += nx * jImpulso;
+          vzL += nz * jImpulso;
+        } else {
+          const empujonLateral = 1.4 * factorPesoLocal;
+          vxL += nx * empujonLateral;
+          vzL += nz * empujonLateral;
+        }
+
+        const velNueva = Math.hypot(vxL, vzL);
+        if (velNueva > 0.08) {
+          const dirLocalX = Math.cos(fisicaCarro.yaw);
+          const dirLocalZ = -Math.sin(fisicaCarro.yaw);
+          const proyAdelante = vxL * dirLocalX + vzL * dirLocalZ;
+          fisicaCarro.velocidad = (proyAdelante >= 0 ? 1 : -1) * Math.min(velMaxBase * 1.35, velNueva);
+          if (proyAdelante >= 0) {
+            fisicaCarro.anguloMovimiento = Math.atan2(-vzL, vxL);
+          } else {
+            fisicaCarro.anguloMovimiento = Math.atan2(vzL, -vxL);
+          }
+        }
+
+        cancelarDerrapePorChoque();
+        dispararChispasEnEnganche(
+          new THREE.Vector3((nuevoX + rx) * 0.5, fisicaCarro.y + 0.25, (nuevoZ + rz) * 0.5),
+          perfil.colorChispa
+        );
+        reproducirImpacto(Math.min(1, Math.max(0.3, Math.abs(velRelN) / Math.max(1, velMaxBase))), 'obstaculo');
+      }
+    }
   }
 
   const xAnterior = fisicaCarro.x;
