@@ -7,7 +7,8 @@ import {
   listaColisionadoresEnganches,
   estadoCronometro,
   estadoRed,
-  jugadoresRemotos
+  jugadoresRemotos,
+  entradaTactil
 } from './estado.js';
 import { cacheMiniaturas, liberarObjeto3D, crearVistaPreviaEscenario } from './recursos.js';
 import { lienzo, camara, renderizador, controles, cargarEscenario } from './escenario.js';
@@ -162,6 +163,84 @@ const avisoRed = document.getElementById('aviso-red');
 const capaEtiquetas3D = document.getElementById('capa-etiquetas-3d');
 const hudLeaderboard = document.getElementById('hud-leaderboard');
 const listaLeaderboardHud = document.getElementById('lista-leaderboard-hud');
+const btnReubicarMeta = document.getElementById('btn-reubicar-meta');
+const btnControlesTactiles = document.getElementById('btn-controles-tactiles');
+const btnColapsarTallerMK = document.getElementById('btn-colapsar-taller-mk');
+const controlesTactiles = document.getElementById('controles-tactiles');
+const joystickBase = document.getElementById('joystick-direccion-base');
+const joystickPomo = document.getElementById('joystick-direccion-pomo');
+const grupoVueloTactil = document.getElementById('grupo-vuelo-tactil');
+const btnTactilGas = document.getElementById('btn-tactil-gas');
+const btnTactilFreno = document.getElementById('btn-tactil-freno');
+const btnTactilDerrape = document.getElementById('btn-tactil-derrape');
+const btnTactilSubir = document.getElementById('btn-tactil-subir');
+const btnTactilBajar = document.getElementById('btn-tactil-bajar');
+
+/**
+ * Restablece todas las entradas multitáctiles activas y centra el joystick visual.
+ */
+export function limpiarEntradasTactiles() {
+  entradaTactil.direccion = 0;
+  entradaTactil.acelerar = false;
+  entradaTactil.frenar = false;
+  entradaTactil.derrape = false;
+  entradaTactil.subir = false;
+  entradaTactil.bajar = false;
+  if (joystickPomo) {
+    joystickPomo.style.transition = 'transform 0.16s ease-out';
+    joystickPomo.style.transform = 'translate(0px, 0px)';
+  }
+  [btnTactilGas, btnTactilFreno, btnTactilDerrape, btnTactilSubir, btnTactilBajar].forEach((b) => {
+    if (b && b.classList) b.classList.remove('presionado');
+  });
+}
+
+/**
+ * Detecta pantallas táctiles al iniciar y activa la visibilidad por defecto en móvil/tablet.
+ */
+export function detectarDispositivoTactil() {
+  const tieneTouch =
+    (typeof window !== 'undefined' && 'ontouchstart' in window) ||
+    (typeof navigator !== 'undefined' && (navigator.maxTouchPoints || 0) > 0) ||
+    (typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(pointer: coarse)').matches);
+  entradaTactil.esMovil = Boolean(tieneTouch);
+  entradaTactil.mostrarControles = Boolean(tieneTouch);
+  actualizarVisibilidadControlesTactiles();
+  return entradaTactil.esMovil;
+}
+
+/**
+ * Actualiza visibilidad de #controles-tactiles, #grupo-vuelo-tactil y botón HUD según modo y clase.
+ */
+export function actualizarVisibilidadControlesTactiles() {
+  const enConduccion = estadoCarro.modoJuego === 'conduccion';
+  const visible = enConduccion && Boolean(entradaTactil.mostrarControles);
+  if (controlesTactiles) {
+    controlesTactiles.style.display = visible ? 'flex' : 'none';
+  }
+  if (grupoVueloTactil) {
+    grupoVueloTactil.style.display = estadoCarro.claseVehiculo === 'avion' ? 'flex' : 'none';
+  }
+  if (btnControlesTactiles) {
+    btnControlesTactiles.classList.toggle('activo', Boolean(entradaTactil.mostrarControles));
+    btnControlesTactiles.textContent = entradaTactil.mostrarControles ? '📱 Táctil: ON' : '📱 Táctil: OFF';
+  }
+  if (!visible) {
+    limpiarEntradasTactiles();
+  }
+}
+
+/**
+ * Alterna manualmente la visibilidad de los controles multitáctiles en pantalla.
+ */
+export function alternarControlesTactiles(forzar = null) {
+  entradaTactil.mostrarControles =
+    typeof forzar === 'boolean' ? forzar : !entradaTactil.mostrarControles;
+  actualizarVisibilidadControlesTactiles();
+  return entradaTactil.mostrarControles;
+}
 
 const etiquetasDomPorId = new Map();
 let timerAvisoRed = null;
@@ -444,6 +523,7 @@ function actualizarBotonesClaseYHUD() {
   if (guiaVueloHud) {
     guiaVueloHud.style.display = esAvion ? 'inline-block' : 'none';
   }
+  actualizarVisibilidadControlesTactiles();
 
   const pestanasDef = PESTANAS_POR_CLASE[estadoCarro.claseVehiculo] || PESTANAS_POR_CLASE.coche;
   const botonesPestana = document.querySelectorAll('.btn-pestana');
@@ -1027,6 +1107,7 @@ export function alternarModoTallerConduccion() {
     bandejaInferior.classList.add('oculta');
     hudConduccion.style.display = 'flex';
     btnCamara.style.display = 'inline-block';
+    if (btnReubicarMeta) btnReubicarMeta.style.display = 'inline-block';
     btnAlternarModo.textContent = 'Volver al Taller (T)';
     btnAlternarModo.classList.add('en-conduccion');
     actualizarNombreChasisHUD();
@@ -1091,6 +1172,7 @@ export function alternarModoTallerConduccion() {
     bandejaInferior.classList.remove('oculta');
     hudConduccion.style.display = 'none';
     btnCamara.style.display = 'none';
+    if (btnReubicarMeta) btnReubicarMeta.style.display = 'none';
     btnAlternarModo.textContent = '¡Conducir! (T)';
     btnAlternarModo.classList.remove('en-conduccion');
     dispararChispasEnEnganche(new THREE.Vector3(0, 0.3, 0));
@@ -1255,6 +1337,177 @@ export function configurarEventosInteraccion() {
   actualizarBotonesClaseYHUD();
   actualizarPanelesMarioKart();
   inicializarAudioInteractivo();
+  detectarDispositivoTactil();
+
+  if (btnReubicarMeta) {
+    btnReubicarMeta.addEventListener('click', () => {
+      if (estadoCarro.modoJuego === 'conduccion') reposicionarEnMeta();
+    });
+  }
+  if (btnControlesTactiles) {
+    btnControlesTactiles.addEventListener('click', () => alternarControlesTactiles());
+  }
+  if (btnColapsarTallerMK && panelPersonalizacionMK) {
+    btnColapsarTallerMK.addEventListener('click', () => {
+      panelPersonalizacionMK.classList.toggle('colapsado-movil');
+      const colapsado = panelPersonalizacionMK.classList.contains('colapsado-movil');
+      btnColapsarTallerMK.textContent = colapsado ? '▲ Mostrar' : '▼ Ocultar';
+    });
+  }
+
+  // Gestor multitouch independiente por pointerId (+ respaldo TouchEvent)
+  if (joystickBase) {
+    let joyPointerId = null;
+    const ZONA_MUERTA_JOY = 0.10;
+    const actualizarJoystickDesdeX = (clientX) => {
+      const rect =
+        typeof joystickBase.getBoundingClientRect === 'function'
+          ? joystickBase.getBoundingClientRect()
+          : { left: 20, width: 160 };
+      const anchoBase = rect.width || 160;
+      const centroX = rect.left + anchoBase * 0.5;
+      const maxDesp = Math.max(24, (anchoBase - 44) * 0.5);
+      const rawNorm = Math.max(-1, Math.min(1, (clientX - centroX) / maxDesp));
+      let dirFinal = 0;
+      if (Math.abs(rawNorm) > ZONA_MUERTA_JOY) {
+        dirFinal =
+          Math.sign(rawNorm) * ((Math.abs(rawNorm) - ZONA_MUERTA_JOY) / (1 - ZONA_MUERTA_JOY));
+      }
+      entradaTactil.direccion = +Math.max(-1, Math.min(1, dirFinal)).toFixed(3);
+      if (joystickPomo) {
+        joystickPomo.style.transition = 'none';
+        joystickPomo.style.transform = `translate(${(rawNorm * maxDesp).toFixed(1)}px, 0px)`;
+      }
+    };
+    const soltarJoystick = () => {
+      joyPointerId = null;
+      entradaTactil.direccion = 0;
+      if (joystickPomo) {
+        joystickPomo.style.transition = 'transform 0.16s ease-out';
+        joystickPomo.style.transform = 'translate(0px, 0px)';
+      }
+    };
+
+    joystickBase.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      joyPointerId = e.pointerId;
+      if (typeof joystickBase.setPointerCapture === 'function') {
+        try {
+          joystickBase.setPointerCapture(e.pointerId);
+        } catch (err) {
+          // Ignora entornos sin captura de puntero
+        }
+      }
+      actualizarJoystickDesdeX(e.clientX);
+    });
+    joystickBase.addEventListener('pointermove', (e) => {
+      if (joyPointerId !== null && e.pointerId === joyPointerId) {
+        e.preventDefault();
+        actualizarJoystickDesdeX(e.clientX);
+      }
+    });
+    const finalizarPointerJoy = (e) => {
+      if (joyPointerId !== null && e.pointerId === joyPointerId) {
+        soltarJoystick();
+      }
+    };
+    joystickBase.addEventListener('pointerup', finalizarPointerJoy);
+    joystickBase.addEventListener('pointercancel', finalizarPointerJoy);
+    joystickBase.addEventListener('lostpointercapture', finalizarPointerJoy);
+
+    // Respaldo TouchEvent por identifier cuando PointerEvent no es emitido
+    if (typeof window !== 'undefined' && !('PointerEvent' in window)) {
+      let joyTouchId = null;
+      joystickBase.addEventListener('touchstart', (e) => {
+        if (joyTouchId !== null || !e.changedTouches || !e.changedTouches[0]) return;
+        e.preventDefault();
+        const t = e.changedTouches[0];
+        joyTouchId = t.identifier;
+        actualizarJoystickDesdeX(t.clientX);
+      });
+      joystickBase.addEventListener('touchmove', (e) => {
+        if (joyTouchId === null || !e.changedTouches) return;
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          if (e.changedTouches[i].identifier === joyTouchId) {
+            e.preventDefault();
+            actualizarJoystickDesdeX(e.changedTouches[i].clientX);
+            break;
+          }
+        }
+      });
+      const finTouchJoy = (e) => {
+        if (joyTouchId === null || !e.changedTouches) return;
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          if (e.changedTouches[i].identifier === joyTouchId) {
+            joyTouchId = null;
+            soltarJoystick();
+            break;
+          }
+        }
+      };
+      joystickBase.addEventListener('touchend', finTouchJoy);
+      joystickBase.addEventListener('touchcancel', finTouchJoy);
+    }
+  }
+
+  const vincularBotonTactil = (btnEl, claveEstado) => {
+    if (!btnEl) return;
+    const idsActivos = new Set();
+    const activar = (id) => {
+      idsActivos.add(id);
+      entradaTactil[claveEstado] = true;
+      btnEl.classList.add('presionado');
+    };
+    const desactivar = (id) => {
+      idsActivos.delete(id);
+      if (idsActivos.size === 0) {
+        entradaTactil[claveEstado] = false;
+        btnEl.classList.remove('presionado');
+      }
+    };
+
+    btnEl.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (typeof btnEl.setPointerCapture === 'function') {
+        try {
+          btnEl.setPointerCapture(e.pointerId);
+        } catch (err) {
+          // Ignora captura no soportada
+        }
+      }
+      activar(e.pointerId ?? 'mouse');
+    });
+    const soltar = (e) => {
+      desactivar(e.pointerId ?? 'mouse');
+    };
+    btnEl.addEventListener('pointerup', soltar);
+    btnEl.addEventListener('pointercancel', soltar);
+    btnEl.addEventListener('lostpointercapture', soltar);
+
+    if (typeof window !== 'undefined' && !('PointerEvent' in window)) {
+      btnEl.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          activar(`t_${e.changedTouches[i].identifier}`);
+        }
+      });
+      const soltarTouch = (e) => {
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          desactivar(`t_${e.changedTouches[i].identifier}`);
+        }
+      };
+      btnEl.addEventListener('touchend', soltarTouch);
+      btnEl.addEventListener('touchcancel', soltarTouch);
+    }
+  };
+
+  vincularBotonTactil(btnTactilGas, 'acelerar');
+  vincularBotonTactil(btnTactilFreno, 'frenar');
+  vincularBotonTactil(btnTactilDerrape, 'derrape');
+  vincularBotonTactil(btnTactilSubir, 'subir');
+  vincularBotonTactil(btnTactilBajar, 'bajar');
 
   // Restaurar apodo del piloto desde localStorage y conectar controles de sala multijugador
   let apodoGuardado = null;

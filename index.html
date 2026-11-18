@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Taller y Circuito de Juguetes 3D - Piezas Intercambiables</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23161c26'/%3E%3Cpath d='M10 38 L18 24 L42 24 L54 34 L54 44 L10 44 Z' fill='%23ff1e27'/%3E%3Cpath d='M21 26 L39 26 L46 33 L17 33 Z' fill='%2338bdf8'/%3E%3Ccircle cx='20' cy='44' r='8' fill='%230f172a' stroke='%23fbbf24' stroke-width='3'/%3E%3Ccircle cx='44' cy='44' r='8' fill='%230f172a' stroke='%23fbbf24' stroke-width='3'/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="css/estilos.css" />
@@ -35,6 +35,12 @@
       </button>
       <button id="btn-camara" class="btn-secundario" title="Alternar entre Tercera Persona y Cabina (Tecla C)">
         Cámara: 3ª Persona (C)
+      </button>
+      <button id="btn-reubicar-meta" class="btn-secundario" title="Reubicar vehículo en la meta (Tecla R)">
+        🔄 Meta (R)
+      </button>
+      <button id="btn-controles-tactiles" class="btn-tactil-toggle" title="Mostrar u ocultar controles multitáctiles">
+        📱 Táctil
       </button>
       <button id="btn-alternar-modo" class="btn-principal" title="Salir a conducir por la pista o regresar al taller (Tecla T)">
         ¡Conducir! (T)
@@ -107,7 +113,10 @@
   <aside id="panel-personalizacion-mk">
     <div class="cabecera-panel-mk">
       <span>PERSONALIZAR VEHÍCULO</span>
-      <span id="mk-enganche-activo" class="etiqueta-enganche-mk">Simetría activa</span>
+      <div class="acciones-cabecera-mk">
+        <span id="mk-enganche-activo" class="etiqueta-enganche-mk">Simetría activa</span>
+        <button id="btn-colapsar-taller-mk" type="button" class="btn-colapsar-mk" title="Plegar o expandir panel">▼ Ocultar</button>
+      </div>
     </div>
 
     <div id="ranura-mk-chasis" class="ranura-mk activa" data-ranura="chasis">
@@ -228,6 +237,28 @@
         <button id="btn-cerrar-modal-mk" class="btn-cerrar-mk" title="Volver al Taller">✕ Cerrar</button>
       </div>
       <div id="grid-circuitos-mk"></div>
+    </div>
+  </div>
+
+  <!-- Controles Multitáctiles en Pista (#controles-tactiles) -->
+  <div id="controles-tactiles" style="display:none">
+    <div id="zona-joystick-tactil">
+      <div id="joystick-direccion-base" aria-label="Control deslizante de dirección">
+        <span class="flecha-joy izq">◀</span>
+        <div id="joystick-direccion-pomo"></div>
+        <span class="flecha-joy der">▶</span>
+      </div>
+    </div>
+    <div id="zona-pedales-tactil">
+      <div id="grupo-vuelo-tactil" style="display:none">
+        <button id="btn-tactil-subir" type="button" class="btn-tactil btn-vuelo">▲ SUBIR</button>
+        <button id="btn-tactil-bajar" type="button" class="btn-tactil btn-vuelo">▼ BAJAR</button>
+      </div>
+      <div class="fila-pedales-tactil">
+        <button id="btn-tactil-derrape" type="button" class="btn-tactil btn-drift">DRIFT</button>
+        <button id="btn-tactil-freno" type="button" class="btn-tactil btn-freno">FRENO</button>
+        <button id="btn-tactil-gas" type="button" class="btn-tactil btn-gas">GAS</button>
+      </div>
     </div>
   </div>
 

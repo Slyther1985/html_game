@@ -14,7 +14,8 @@ import {
   checkpointsPista,
   obtenerClaveRecord,
   estadoRed,
-  jugadoresRemotos
+  jugadoresRemotos,
+  entradaTactil
 } from './estado.js';
 import { camara, controles } from './escenario.js';
 import { TABLA_CARROCERIAS, obtenerAtributosFinalesVehiculo } from './catalogoPiezas.js';
@@ -478,12 +479,17 @@ export function actualizarFisicaConduccion(dt) {
   const velMaxAtras = -3.432 * factorSuperficiePrev;
   const friccion = !fisicaCarro.enAire && !enPistaActual ? 2.75 : 1.65;
 
-  // 1. Entrada de acelerador, freno y derrape
-  const adelante = teclasConduccion['KeyW'] || teclasConduccion['ArrowUp'];
-  const atras = teclasConduccion['KeyS'] || teclasConduccion['ArrowDown'];
-  const izquierda = teclasConduccion['KeyA'] || teclasConduccion['ArrowLeft'];
-  const derecha = teclasConduccion['KeyD'] || teclasConduccion['ArrowRight'];
-  const teclaDerrape = teclasConduccion['ShiftLeft'] || teclasConduccion['ShiftRight'] || teclasConduccion['Space'];
+  // 1. Entrada de acelerador, freno y derrape (teclado + controles multitáctiles)
+  const adelante = Boolean(teclasConduccion['KeyW'] || teclasConduccion['ArrowUp'] || entradaTactil.acelerar);
+  const atras = Boolean(teclasConduccion['KeyS'] || teclasConduccion['ArrowDown'] || entradaTactil.frenar);
+  const izquierda = Boolean(teclasConduccion['KeyA'] || teclasConduccion['ArrowLeft']);
+  const derecha = Boolean(teclasConduccion['KeyD'] || teclasConduccion['ArrowRight']);
+  const teclaDerrape = Boolean(
+    teclasConduccion['ShiftLeft'] ||
+    teclasConduccion['ShiftRight'] ||
+    teclasConduccion['Space'] ||
+    entradaTactil.derrape
+  );
 
   if (adelante) {
     if (fisicaCarro.velocidad < 0) {
@@ -515,10 +521,19 @@ export function actualizarFisicaConduccion(dt) {
 
   fisicaCarro.velocidad = Math.max(velMaxAtras, fisicaCarro.velocidad);
 
-  // 2. Dirección reactiva (-20% giro máximo: 0.36 rad y tasaGiroBase 3.42) + Derrape táctico
+  // 2. Dirección reactiva (-20% giro máximo: 0.36 rad y tasaGiroBase 3.42) + proporcionalidad táctil + Derrape táctico
+  const dirTactil = Number.isFinite(entradaTactil.direccion)
+    ? Math.max(-1, Math.min(1, entradaTactil.direccion))
+    : 0;
   let objetivoVolante = 0;
-  if (izquierda) objetivoVolante = 0.36;
-  if (derecha) objetivoVolante = -0.36;
+  if (Math.abs(dirTactil) > 0.001) {
+    const dirTeclado = (izquierda ? -1 : 0) + (derecha ? 1 : 0);
+    const dirTotal = Math.max(-1, Math.min(1, dirTeclado + dirTactil));
+    objetivoVolante = -dirTotal * 0.36;
+  } else {
+    if (izquierda && !derecha) objetivoVolante = 0.36;
+    if (derecha && !izquierda) objetivoVolante = -0.36;
+  }
   const velLerpVolante = objetivoVolante !== 0 ? 28 : 32;
   fisicaCarro.anguloVolante += (objetivoVolante - fisicaCarro.anguloVolante) * Math.min(1, dt * velLerpVolante);
 
@@ -777,9 +792,14 @@ export function actualizarFisicaConduccion(dt) {
 
   if (perfil.vuela) {
     const tecladoSube =
-      teclasConduccion['KeyQ'] || (fisicaCarro.altitudVuelo > 0.05 && teclasConduccion['ShiftLeft']);
+      teclasConduccion['KeyQ'] ||
+      entradaTactil.subir ||
+      (fisicaCarro.altitudVuelo > 0.05 && (teclasConduccion['ShiftLeft'] || entradaTactil.derrape));
     const tecladoBaja =
-      teclasConduccion['KeyE'] || teclasConduccion['ControlLeft'] || teclasConduccion['ControlRight'];
+      teclasConduccion['KeyE'] ||
+      teclasConduccion['ControlLeft'] ||
+      teclasConduccion['ControlRight'] ||
+      entradaTactil.bajar;
     const altMaxPermitida = Math.max(0.5, limiteTechoY - ySueloObjetivo);
     let pitchObjetivoAvion = pendienteSuelo;
 

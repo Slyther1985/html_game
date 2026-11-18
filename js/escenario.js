@@ -67,6 +67,15 @@ controles.minDistance = 1.5;
 controles.maxDistance = 8.0;
 controles.minPolarAngle = 0.15;
 controles.maxPolarAngle = Math.PI / 2 - 0.04;
+controles.enableRotate = true;
+controles.enableZoom = true;
+controles.enablePan = false;
+if (typeof THREE !== 'undefined' && THREE.TOUCH) {
+  controles.touches = {
+    ONE: THREE.TOUCH.ROTATE,
+    TWO: THREE.TOUCH.DOLLY_PAN
+  };
+}
 controles.update();
 
 export let sistemaPolvo = null;

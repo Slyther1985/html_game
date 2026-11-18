@@ -8,13 +8,13 @@
 | :--- | ---: | :--- |
 | `js/audio.js` | 743 | `inicializarAudioInteractivo` (L410), `alternarSilencio` (L425), `cambiarModoMusical` (L442), `actualizarAudioMotor` (L458), `actualizarAudioDerrape` (L496), `reproducirTurbo` (L521), `reproducirImpacto` (L535), `reproducirCheckpoint` (L577), `reproducirMeta` (L587), `reproducirEncajePieza` (L615), `reproducirQuitarPieza` (L623), `reproducirCambioColor` (L630), `seleccionarPistaMusicalPorId` (L637), `cambiarPistaConduccion` (L652), `actualizarMusicaAmbiental` (L668) |
 | `js/catalogoPiezas.js` | 3762 | `crearMaterialPintura` (L12), `crearMaterialCristalCabina` (L27), `agregarDetallesCarroceria` (L43), `crearInteriorDetallado` (L73), `TABLA_CARROCERIAS` (L510), `TABLA_PIEZAS` (L2357), `obtenerAtributosFinalesVehiculo` (L3695) |
-| `js/conduccion.js` | 1093 | `PERFILES_FISICA` (L48), `formatearTiempoMMSS` (L100), `actualizarHUDCronometro` (L139), `reiniciarCronometroVuelta` (L174), `obtenerInfoSuperficieEnPunto` (L324), `obtenerAlturaSuperficieEnPunto` (L353), `reposicionarEnMeta` (L360), `actualizarFisicaConduccion` (L427), `actualizarObstaculos` (L957), `actualizarCamaraConduccion` (L1064) |
+| `js/conduccion.js` | 1113 | `PERFILES_FISICA` (L49), `formatearTiempoMMSS` (L101), `actualizarHUDCronometro` (L140), `reiniciarCronometroVuelta` (L175), `obtenerInfoSuperficieEnPunto` (L325), `obtenerAlturaSuperficieEnPunto` (L354), `reposicionarEnMeta` (L361), `actualizarFisicaConduccion` (L428), `actualizarObstaculos` (L977), `actualizarCamaraConduccion` (L1084) |
 | `js/config.js` | 29 | `URL_WS_PRODUCCION` (L1), `URL_WS_LOCAL` (L2), `TASA_ENVIO_HZ` (L3), `resolverUrlWebSocket` (L8), `CONFIG_RED` (L20) |
 | `js/constantes.js` | 78 | `CLASES_VEHICULO` (L1), `TOPE_STAT_UI` (L2), `IDS_HABITACIONES` (L3), `CATALOGO_HABITACIONES` (L10), `HABITACION_ANCHO` (L54), `HABITACION_LARGO` (L55), `HABITACION_ALTO` (L56), `ALFOMBRA_RADIO` (L57), `CANTIDAD_POLVO` (L58), `URLS_TEXTURAS` (L60), `PALETA_COLORES` (L68) |
 | `js/enganches.js` | 406 | `grupoJuguete` (L14), `dispararChispasEnEnganche` (L25), `animarSalidaYLiberar` (L65), `animarEntradaElastica` (L101), `colocarPiezaEnEnganche` (L130), `ensamblarGrupoVehiculo` (L188), `destruirVehiculoRemoto` (L299), `construirOActualizarCarroceria` (L320) |
-| `js/escenario.js` | 3319 | `lienzo` (L29), `escena` (L30), `grupoEscenarioActivo` (L33), `camara` (L36), `renderizador` (L44), `controles` (L62), `sistemaPolvo` (L72), `crearIluminacion` (L78), `construirHabitacionExpandida` (L313), `construirPistaDeCarreras` (L1416), `construirEscenarioAcuatico` (L1974), `construirEscenarioAtico` (L2409), `construirEscenarioHangar` (L2804), `crearHazYPolvoVentana` (L3212), `cargarEscenario` (L3264) |
-| `js/estado.js` | 177 | `estadoCarro` (L11), `fisicaCarro` (L70), `teclasConduccion` (L92), `nodosEnganches` (L94), `listaColisionadoresEnganches` (L95), `animacionesActivas` (L96), `chorrosChispasActivos` (L97), `mallasSuperficieConducible` (L100), `obstaculosHabitacion` (L102), `plataformasTurbo` (L105), `obstaculosDinamicos` (L106), `obstaculosMoviles` (L107), `trampasPista` (L108), `obtenerClaveRecord` (L115), `estadoCronometro` (L149), `checkpointsPista` (L163), `estadoRed` (L166), `jugadoresRemotos` (L176) |
-| `js/interfaz.js` | 1600 | `actualizarPanelMultijugador` (L186), `actualizarEtiquetasYLeaderboard` (L249), `generarMiniaturasCatalogo` (L375), `actualizarPanelesMarioKart` (L557), `ciclarOpcionRanuraMK` (L724), `abrirModalCircuitosMK` (L770), `cerrarModalCircuitosMK` (L841), `cambiarClaseVehiculo` (L850), `cambiarHabitacion` (L919), `actualizarTextoEstado` (L985), `alternarModoTallerConduccion` (L1015), `alternarCamaraConduccion` (L1110), `renderizarBandeja` (L1121), `configurarEventosInteraccion` (L1249) |
+| `js/escenario.js` | 3328 | `lienzo` (L29), `escena` (L30), `grupoEscenarioActivo` (L33), `camara` (L36), `renderizador` (L44), `controles` (L62), `sistemaPolvo` (L81), `crearIluminacion` (L87), `construirHabitacionExpandida` (L322), `construirPistaDeCarreras` (L1425), `construirEscenarioAcuatico` (L1983), `construirEscenarioAtico` (L2418), `construirEscenarioHangar` (L2813), `crearHazYPolvoVentana` (L3221), `cargarEscenario` (L3273) |
+| `js/estado.js` | 189 | `estadoCarro` (L11), `fisicaCarro` (L70), `teclasConduccion` (L92), `nodosEnganches` (L94), `listaColisionadoresEnganches` (L95), `animacionesActivas` (L96), `chorrosChispasActivos` (L97), `mallasSuperficieConducible` (L100), `obstaculosHabitacion` (L102), `plataformasTurbo` (L105), `obstaculosDinamicos` (L106), `obstaculosMoviles` (L107), `trampasPista` (L108), `obtenerClaveRecord` (L115), `estadoCronometro` (L149), `checkpointsPista` (L163), `estadoRed` (L166), `jugadoresRemotos` (L176), `entradaTactil` (L179) |
+| `js/interfaz.js` | 1853 | `limpiarEntradasTactiles` (L182), `detectarDispositivoTactil` (L201), `actualizarVisibilidadControlesTactiles` (L217), `alternarControlesTactiles` (L238), `actualizarPanelMultijugador` (L265), `actualizarEtiquetasYLeaderboard` (L328), `generarMiniaturasCatalogo` (L454), `actualizarPanelesMarioKart` (L637), `ciclarOpcionRanuraMK` (L804), `abrirModalCircuitosMK` (L850), `cerrarModalCircuitosMK` (L921), `cambiarClaseVehiculo` (L930), `cambiarHabitacion` (L999), `actualizarTextoEstado` (L1065), `alternarModoTallerConduccion` (L1095), `alternarCamaraConduccion` (L1192), `renderizarBandeja` (L1203), `configurarEventosInteraccion` (L1331) |
 | `js/main.js` | 185 | — (punto de entrada) |
 | `js/partituras.js` | 508 | `notaAFrecuencia` (L16), `IDS_PISTAS_CONDUCCION` (L41), `CATALOGO_PARTITURAS` (L49) |
 | `js/recursos.js` | 1498 | `cargadorTexturas` (L3), `bancoTexturas` (L6), `cacheMiniaturas` (L7), `crearCajaRedondeada` (L13), `liberarObjeto3D` (L57), `crearRespaldoMaderaCanvas` (L76), `crearRespaldoSpriteCanvas` (L116), `cargarTexturaSegura` (L134), `crearTexturaPapelTapiz` (L155), `crearTexturaAlfombra` (L212), `crearTexturaPistaAsfalto` (L250), `crearTexturaPianoCurva` (L287), `crearTexturaMetaCuadros` (L307), `crearTexturaBandaRodadura` (L330), `crearTexturaDiscoFreno` (L415), `crearTexturaTurboPad` (L496), `crearTexturaPosterPared` (L572), `crearTexturaLetraCubo` (L919), `crearTexturaPelotaLuxo` (L953), `crearTexturaTablero` (L981), `crearTexturaAgua` (L1101), `crearTexturaAzulejoPiscina` (L1136), `crearTexturaTierraCompactada` (L1169), `crearTexturaPisoHangar` (L1198), `crearVistaPreviaEscenario` (L1229), `crearTexturaTrampa` (L1353), `inicializarRecursos` (L1414) |
@@ -189,48 +189,48 @@
 | 3664 | `TABLA_PIEZAS` | `cola_booster_cohete` | Cola con Booster |
 
 ---
-## `js/conduccion.js` (1093 líneas)
+## `js/conduccion.js` (1113 líneas)
 
 ### Imports
 - **L1** desde `./constantes.js`: CATALOGO_HABITACIONES
-- **L2** desde `./estado.js`: estadoCarro, fisicaCarro, teclasConduccion, mallasSuperficieConducible, obstaculosHabitacion, nodosEnganches, plataformasTurbo, obstaculosDinamicos, obstaculosMoviles, trampasPista, estadoCronometro, checkpointsPista, obtenerClaveRecord, estadoRed, jugadoresRemotos
-- **L19** desde `./escenario.js`: camara, controles
-- **L20** desde `./catalogoPiezas.js`: TABLA_CARROCERIAS, obtenerAtributosFinalesVehiculo
-- **L21** desde `./enganches.js`: grupoJuguete, dispararChispasEnEnganche
-- **L22** desde `./audio.js`: actualizarAudioMotor, actualizarAudioDerrape, reproducirTurbo, reproducirImpacto, reproducirCheckpoint, reproducirMeta
+- **L2** desde `./estado.js`: estadoCarro, fisicaCarro, teclasConduccion, mallasSuperficieConducible, obstaculosHabitacion, nodosEnganches, plataformasTurbo, obstaculosDinamicos, obstaculosMoviles, trampasPista, estadoCronometro, checkpointsPista, obtenerClaveRecord, estadoRed, jugadoresRemotos, entradaTactil
+- **L20** desde `./escenario.js`: camara, controles
+- **L21** desde `./catalogoPiezas.js`: TABLA_CARROCERIAS, obtenerAtributosFinalesVehiculo
+- **L22** desde `./enganches.js`: grupoJuguete, dispararChispasEnEnganche
+- **L23** desde `./audio.js`: actualizarAudioMotor, actualizarAudioDerrape, reproducirTurbo, reproducirImpacto, reproducirCheckpoint, reproducirMeta
 
 ### Exports
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 48 | `const` | `PERFILES_FISICA` | `PERFILES_FISICA` |
-| 100 | `function` | `formatearTiempoMMSS` | `formatearTiempoMMSS(segundos)` |
-| 139 | `function` | `actualizarHUDCronometro` | `actualizarHUDCronometro()` |
-| 174 | `function` | `reiniciarCronometroVuelta` | `reiniciarCronometroVuelta(activar = false)` |
-| 324 | `function` | `obtenerInfoSuperficieEnPunto` | `obtenerInfoSuperficieEnPunto(x, z, alturaReferencia)` |
-| 353 | `function` | `obtenerAlturaSuperficieEnPunto` | `obtenerAlturaSuperficieEnPunto(x, z, alturaReferencia)` |
-| 360 | `function` | `reposicionarEnMeta` | `reposicionarEnMeta()` |
-| 427 | `function` | `actualizarFisicaConduccion` | `actualizarFisicaConduccion(dt)` |
-| 957 | `function` | `actualizarObstaculos` | `actualizarObstaculos(dt, tiempoTotal)` |
-| 1064 | `function` | `actualizarCamaraConduccion` | `actualizarCamaraConduccion(dt)` |
+| 49 | `const` | `PERFILES_FISICA` | `PERFILES_FISICA` |
+| 101 | `function` | `formatearTiempoMMSS` | `formatearTiempoMMSS(segundos)` |
+| 140 | `function` | `actualizarHUDCronometro` | `actualizarHUDCronometro()` |
+| 175 | `function` | `reiniciarCronometroVuelta` | `reiniciarCronometroVuelta(activar = false)` |
+| 325 | `function` | `obtenerInfoSuperficieEnPunto` | `obtenerInfoSuperficieEnPunto(x, z, alturaReferencia)` |
+| 354 | `function` | `obtenerAlturaSuperficieEnPunto` | `obtenerAlturaSuperficieEnPunto(x, z, alturaReferencia)` |
+| 361 | `function` | `reposicionarEnMeta` | `reposicionarEnMeta()` |
+| 428 | `function` | `actualizarFisicaConduccion` | `actualizarFisicaConduccion(dt)` |
+| 977 | `function` | `actualizarObstaculos` | `actualizarObstaculos(dt, tiempoTotal)` |
+| 1084 | `function` | `actualizarCamaraConduccion` | `actualizarCamaraConduccion(dt)` |
 
 ### Símbolos Internos (Nivel Superior)
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 31 | `const` | `raycasterSuelo` | `raycasterSuelo` |
-| 32 | `const` | `vectorAbajo` | `vectorAbajo` |
-| 33 | `let` | `acumuladorChispasDerrape` | `acumuladorChispasDerrape` |
-| 34 | `let` | `enPistaActual` | `enPistaActual` |
-| 35 | `let` | `tipoSuperficieActual` | `tipoSuperficieActual` |
-| 36 | `let` | `temporizadorVibracionAudio` | `temporizadorVibracionAudio` |
-| 37 | `let` | `ultimoPitchTerreno` | `ultimoPitchTerreno` |
-| 38 | `let` | `tiempoHidrodinamico` | `tiempoHidrodinamico` |
-| 39 | `let` | `tipoTrampaActiva` | `tipoTrampaActiva` |
-| 41 | `function` | `calcularFactorAfinidadMedio` | `calcularFactorAfinidadMedio(claseVehiculo, tipoSuperficie, enAire, idHabitacion)` |
-| 120 | `function` | `reiniciarLucesCheckpoints` | `reiniciarLucesCheckpoints()` |
-| 188 | `function` | `actualizarCronometroYCheckpoints` | `actualizarCronometroYCheckpoints(dt, xAnterior)` |
-| 282 | `function` | `diferenciaAngular` | `diferenciaAngular(objetivo, actual)` |
-| 289 | `function` | `actualizarInsigniaEstadoHUD` | `actualizarInsigniaEstadoHUD()` |
-| 311 | `function` | `cancelarDerrapePorChoque` | `cancelarDerrapePorChoque()` |
+| 32 | `const` | `raycasterSuelo` | `raycasterSuelo` |
+| 33 | `const` | `vectorAbajo` | `vectorAbajo` |
+| 34 | `let` | `acumuladorChispasDerrape` | `acumuladorChispasDerrape` |
+| 35 | `let` | `enPistaActual` | `enPistaActual` |
+| 36 | `let` | `tipoSuperficieActual` | `tipoSuperficieActual` |
+| 37 | `let` | `temporizadorVibracionAudio` | `temporizadorVibracionAudio` |
+| 38 | `let` | `ultimoPitchTerreno` | `ultimoPitchTerreno` |
+| 39 | `let` | `tiempoHidrodinamico` | `tiempoHidrodinamico` |
+| 40 | `let` | `tipoTrampaActiva` | `tipoTrampaActiva` |
+| 42 | `function` | `calcularFactorAfinidadMedio` | `calcularFactorAfinidadMedio(claseVehiculo, tipoSuperficie, enAire, idHabitacion)` |
+| 121 | `function` | `reiniciarLucesCheckpoints` | `reiniciarLucesCheckpoints()` |
+| 189 | `function` | `actualizarCronometroYCheckpoints` | `actualizarCronometroYCheckpoints(dt, xAnterior)` |
+| 283 | `function` | `diferenciaAngular` | `diferenciaAngular(objetivo, actual)` |
+| 290 | `function` | `actualizarInsigniaEstadoHUD` | `actualizarInsigniaEstadoHUD()` |
+| 312 | `function` | `cancelarDerrapePorChoque` | `cancelarDerrapePorChoque()` |
 
 ---
 ## `js/config.js` (29 líneas)
@@ -302,7 +302,7 @@
 | 114 | `function` | `sincronizarConfiguracionClase` | `sincronizarConfiguracionClase()` |
 
 ---
-## `js/escenario.js` (3319 líneas)
+## `js/escenario.js` (3328 líneas)
 
 ### Imports
 - **L1** desde `./constantes.js`: HABITACION_ANCHO, HABITACION_LARGO, HABITACION_ALTO, ALFOMBRA_RADIO, CANTIDAD_POLVO, CATALOGO_HABITACIONES
@@ -318,36 +318,36 @@
 | 36 | `const` | `camara` | `camara` |
 | 44 | `const` | `renderizador` | `renderizador` |
 | 62 | `const` | `controles` | `controles` |
-| 72 | `let` | `sistemaPolvo` | `sistemaPolvo` |
-| 78 | `function` | `crearIluminacion` | `crearIluminacion(contenedor = grupoEscenarioActivo, hab = CATALOGO_HABITACIONES.habitacion_andy)` |
-| 313 | `function` | `construirHabitacionExpandida` | `construirHabitacionExpandida(contenedor = grupoEscenarioActivo)` |
-| 1416 | `function` | `construirPistaDeCarreras` | `construirPistaDeCarreras(contenedor = grupoEscenarioActivo)` |
-| 1974 | `function` | `construirEscenarioAcuatico` | `construirEscenarioAcuatico(contenedor = grupoEscenarioActivo)` |
-| 2409 | `function` | `construirEscenarioAtico` | `construirEscenarioAtico(contenedor = grupoEscenarioActivo)` |
-| 2804 | `function` | `construirEscenarioHangar` | `construirEscenarioHangar(contenedor = grupoEscenarioActivo)` |
-| 3212 | `function` | `crearHazYPolvoVentana` | `crearHazYPolvoVentana(contenedor = grupoEscenarioActivo, hab = CATALOGO_HABITACIONES.habitacion_andy)` |
-| 3264 | `function` | `cargarEscenario` | `cargarEscenario(idHabitacion = estadoCarro.idHabitacion)` |
+| 81 | `let` | `sistemaPolvo` | `sistemaPolvo` |
+| 87 | `function` | `crearIluminacion` | `crearIluminacion(contenedor = grupoEscenarioActivo, hab = CATALOGO_HABITACIONES.habitacion_andy)` |
+| 322 | `function` | `construirHabitacionExpandida` | `construirHabitacionExpandida(contenedor = grupoEscenarioActivo)` |
+| 1425 | `function` | `construirPistaDeCarreras` | `construirPistaDeCarreras(contenedor = grupoEscenarioActivo)` |
+| 1983 | `function` | `construirEscenarioAcuatico` | `construirEscenarioAcuatico(contenedor = grupoEscenarioActivo)` |
+| 2418 | `function` | `construirEscenarioAtico` | `construirEscenarioAtico(contenedor = grupoEscenarioActivo)` |
+| 2813 | `function` | `construirEscenarioHangar` | `construirEscenarioHangar(contenedor = grupoEscenarioActivo)` |
+| 3221 | `function` | `crearHazYPolvoVentana` | `crearHazYPolvoVentana(contenedor = grupoEscenarioActivo, hab = CATALOGO_HABITACIONES.habitacion_andy)` |
+| 3273 | `function` | `cargarEscenario` | `cargarEscenario(idHabitacion = estadoCarro.idHabitacion)` |
 
 ### Símbolos Internos (Nivel Superior)
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 122 | `function` | `crearMaterialClonTextura` | `crearMaterialClonTextura(texBase, opciones = {}, repX = 1, repY = 1)` |
-| 130 | `function` | `interpolarSegmentoCatmull` | `interpolarSegmentoCatmull(p0, p1, p2, p3, pasos)` |
-| 154 | `function` | `subdividirCurvaSuave` | `subdividirCurvaSuave(puntos, guiaAntes, guiaDespues, pasosPorTramo = 6)` |
-| 167 | `function` | `crearArcoCheckpointEnGrupo` | `crearArcoCheckpointEnGrupo(grupoPista, defCP, anchoPorDefecto = 4.0)` |
-| 263 | `function` | `crearBoostPadsEnGrupo` | `crearBoostPadsEnGrupo(grupoPista, defsTurbo)` |
-| 690 | `function` | `crearCintaPistaDesdeNodos` | `crearCintaPistaDesdeNodos(grupoPista, nodos, config)` |
-| 1037 | `function` | `crearRecintoHabitacionBase` | `crearRecintoHabitacionBase(grupoHab, hab, opts)` |
-| 1204 | `function` | `crearMetaYEnlaceTallerEnGrupo` | `crearMetaYEnlaceTallerEnGrupo(grupoPista, metaZ, anchoPista, tipoSuperficie, colorPoste, matEnlace)` |
-| 1257 | `function` | `registrarObstaculoDinamico` | `registrarObstaculoDinamico(grupoPista, malla, x, y, z, radio = 0.34)` |
-| 1272 | `function` | `crearBarreraMovilTematica` | `crearBarreraMovilTematica(grupoPista, x, y, z, ejeX, ejeZ, fase, color1 = 0xff1e27, color2 = 0xf8fafc)` |
-| 1302 | `function` | `crearTramoBifurcacionElevada` | `crearTramoBifurcacionElevada(grupoPista, puntosControl, config)` |
-| 1352 | `function` | `crearTrampasEnGrupo` | `crearTrampasEnGrupo(grupoPista, defsTrampas)` |
-| 1389 | `function` | `crearMuroAtajoDerribable` | `crearMuroAtajoDerribable(grupoPista, cx, baseY, cz, perpX, perpZ, colores = [0xff1e27, 0xffdd00, 0x00f0ff, 0x22c55e])` |
-| 1943 | `function` | `generarNodosCircuitoCerrado` | `generarNodosCircuitoCerrado(tramosCtrl, anchoDefecto, opcionesPorTramo = null)` |
+| 131 | `function` | `crearMaterialClonTextura` | `crearMaterialClonTextura(texBase, opciones = {}, repX = 1, repY = 1)` |
+| 139 | `function` | `interpolarSegmentoCatmull` | `interpolarSegmentoCatmull(p0, p1, p2, p3, pasos)` |
+| 163 | `function` | `subdividirCurvaSuave` | `subdividirCurvaSuave(puntos, guiaAntes, guiaDespues, pasosPorTramo = 6)` |
+| 176 | `function` | `crearArcoCheckpointEnGrupo` | `crearArcoCheckpointEnGrupo(grupoPista, defCP, anchoPorDefecto = 4.0)` |
+| 272 | `function` | `crearBoostPadsEnGrupo` | `crearBoostPadsEnGrupo(grupoPista, defsTurbo)` |
+| 699 | `function` | `crearCintaPistaDesdeNodos` | `crearCintaPistaDesdeNodos(grupoPista, nodos, config)` |
+| 1046 | `function` | `crearRecintoHabitacionBase` | `crearRecintoHabitacionBase(grupoHab, hab, opts)` |
+| 1213 | `function` | `crearMetaYEnlaceTallerEnGrupo` | `crearMetaYEnlaceTallerEnGrupo(grupoPista, metaZ, anchoPista, tipoSuperficie, colorPoste, matEnlace)` |
+| 1266 | `function` | `registrarObstaculoDinamico` | `registrarObstaculoDinamico(grupoPista, malla, x, y, z, radio = 0.34)` |
+| 1281 | `function` | `crearBarreraMovilTematica` | `crearBarreraMovilTematica(grupoPista, x, y, z, ejeX, ejeZ, fase, color1 = 0xff1e27, color2 = 0xf8fafc)` |
+| 1311 | `function` | `crearTramoBifurcacionElevada` | `crearTramoBifurcacionElevada(grupoPista, puntosControl, config)` |
+| 1361 | `function` | `crearTrampasEnGrupo` | `crearTrampasEnGrupo(grupoPista, defsTrampas)` |
+| 1398 | `function` | `crearMuroAtajoDerribable` | `crearMuroAtajoDerribable(grupoPista, cx, baseY, cz, perpX, perpZ, colores = [0xff1e27, 0xffdd00, 0x00f0ff, 0x22c55e])` |
+| 1952 | `function` | `generarNodosCircuitoCerrado` | `generarNodosCircuitoCerrado(tramosCtrl, anchoDefecto, opcionesPorTramo = null)` |
 
 ---
-## `js/estado.js` (177 líneas)
+## `js/estado.js` (189 líneas)
 
 ### Imports
 - **L1** desde `./constantes.js`: PALETA_COLORES
@@ -373,6 +373,7 @@
 | 163 | `const` | `checkpointsPista` | `checkpointsPista` |
 | 166 | `const` | `estadoRed` | `estadoRed` |
 | 176 | `const` | `jugadoresRemotos` | `jugadoresRemotos` |
+| 179 | `const` | `entradaTactil` | `entradaTactil` |
 
 ### Símbolos Internos (Nivel Superior)
 | Línea | Tipo | Símbolo | Firma |
@@ -383,97 +384,113 @@
 | 136 | `function` | `guardarRecordLocalStorage` | `guardarRecordLocalStorage(tiempo, idHabitacion = estadoCarro.idHabitacion, claseVehiculo = estadoCarro.claseVehiculo)` |
 
 ---
-## `js/interfaz.js` (1600 líneas)
+## `js/interfaz.js` (1853 líneas)
 
 ### Imports
 - **L1** desde `./constantes.js`: PALETA_COLORES, TOPE_STAT_UI, CLASES_VEHICULO, IDS_HABITACIONES, CATALOGO_HABITACIONES
-- **L2** desde `./estado.js`: estadoCarro, fisicaCarro, teclasConduccion, nodosEnganches, listaColisionadoresEnganches, estadoCronometro, estadoRed, jugadoresRemotos
-- **L12** desde `./recursos.js`: cacheMiniaturas, liberarObjeto3D, crearVistaPreviaEscenario
-- **L13** desde `./escenario.js`: lienzo, camara, renderizador, controles, cargarEscenario
-- **L14** desde `./catalogoPiezas.js`: TABLA_CARROCERIAS, TABLA_PIEZAS, obtenerAtributosFinalesVehiculo
-- **L15** desde `./enganches.js`: grupoJuguete, colocarPiezaEnEnganche, construirOActualizarCarroceria, dispararChispasEnEnganche
-- **L21** desde `./conduccion.js`: reposicionarEnMeta, reiniciarCronometroVuelta, actualizarHUDCronometro, formatearTiempoMMSS
-- **L27** desde `./audio.js`: alternarSilencio, cambiarModoMusical, cambiarPistaConduccion, seleccionarPistaMusicalPorId, reproducirCambioColor, inicializarAudioInteractivo
-- **L35** desde `./red.js`: crearSalaOnline, unirseSalaOnline, salirDeSala, enviarApariencia, notificarCambioHabitacion
+- **L2** desde `./estado.js`: estadoCarro, fisicaCarro, teclasConduccion, nodosEnganches, listaColisionadoresEnganches, estadoCronometro, estadoRed, jugadoresRemotos, entradaTactil
+- **L13** desde `./recursos.js`: cacheMiniaturas, liberarObjeto3D, crearVistaPreviaEscenario
+- **L14** desde `./escenario.js`: lienzo, camara, renderizador, controles, cargarEscenario
+- **L15** desde `./catalogoPiezas.js`: TABLA_CARROCERIAS, TABLA_PIEZAS, obtenerAtributosFinalesVehiculo
+- **L16** desde `./enganches.js`: grupoJuguete, colocarPiezaEnEnganche, construirOActualizarCarroceria, dispararChispasEnEnganche
+- **L22** desde `./conduccion.js`: reposicionarEnMeta, reiniciarCronometroVuelta, actualizarHUDCronometro, formatearTiempoMMSS
+- **L28** desde `./audio.js`: alternarSilencio, cambiarModoMusical, cambiarPistaConduccion, seleccionarPistaMusicalPorId, reproducirCambioColor, inicializarAudioInteractivo
+- **L36** desde `./red.js`: crearSalaOnline, unirseSalaOnline, salirDeSala, enviarApariencia, notificarCambioHabitacion
 
 ### Exports
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 186 | `function` | `actualizarPanelMultijugador` | `actualizarPanelMultijugador()` |
-| 249 | `function` | `actualizarEtiquetasYLeaderboard` | `actualizarEtiquetasYLeaderboard()` |
-| 375 | `function` | `generarMiniaturasCatalogo` | `generarMiniaturasCatalogo()` |
-| 557 | `function` | `actualizarPanelesMarioKart` | `actualizarPanelesMarioKart()` |
-| 724 | `function` | `ciclarOpcionRanuraMK` | `ciclarOpcionRanuraMK(ranuraId, direccion = 1)` |
-| 770 | `function` | `abrirModalCircuitosMK` | `abrirModalCircuitosMK()` |
-| 841 | `function` | `cerrarModalCircuitosMK` | `cerrarModalCircuitosMK()` |
-| 850 | `function` | `cambiarClaseVehiculo` | `cambiarClaseVehiculo(claseDestino = null)` |
-| 919 | `function` | `cambiarHabitacion` | `cambiarHabitacion(idOpcional = null, origenRed = false)` |
-| 985 | `function` | `actualizarTextoEstado` | `actualizarTextoEstado()` |
-| 1015 | `function` | `alternarModoTallerConduccion` | `alternarModoTallerConduccion()` |
-| 1110 | `function` | `alternarCamaraConduccion` | `alternarCamaraConduccion()` |
-| 1121 | `function` | `renderizarBandeja` | `renderizarBandeja(categoria)` |
-| 1249 | `function` | `configurarEventosInteraccion` | `configurarEventosInteraccion()` |
+| 182 | `function` | `limpiarEntradasTactiles` | `limpiarEntradasTactiles()` |
+| 201 | `function` | `detectarDispositivoTactil` | `detectarDispositivoTactil()` |
+| 217 | `function` | `actualizarVisibilidadControlesTactiles` | `actualizarVisibilidadControlesTactiles()` |
+| 238 | `function` | `alternarControlesTactiles` | `alternarControlesTactiles(forzar = null)` |
+| 265 | `function` | `actualizarPanelMultijugador` | `actualizarPanelMultijugador()` |
+| 328 | `function` | `actualizarEtiquetasYLeaderboard` | `actualizarEtiquetasYLeaderboard()` |
+| 454 | `function` | `generarMiniaturasCatalogo` | `generarMiniaturasCatalogo()` |
+| 637 | `function` | `actualizarPanelesMarioKart` | `actualizarPanelesMarioKart()` |
+| 804 | `function` | `ciclarOpcionRanuraMK` | `ciclarOpcionRanuraMK(ranuraId, direccion = 1)` |
+| 850 | `function` | `abrirModalCircuitosMK` | `abrirModalCircuitosMK()` |
+| 921 | `function` | `cerrarModalCircuitosMK` | `cerrarModalCircuitosMK()` |
+| 930 | `function` | `cambiarClaseVehiculo` | `cambiarClaseVehiculo(claseDestino = null)` |
+| 999 | `function` | `cambiarHabitacion` | `cambiarHabitacion(idOpcional = null, origenRed = false)` |
+| 1065 | `function` | `actualizarTextoEstado` | `actualizarTextoEstado()` |
+| 1095 | `function` | `alternarModoTallerConduccion` | `alternarModoTallerConduccion()` |
+| 1192 | `function` | `alternarCamaraConduccion` | `alternarCamaraConduccion()` |
+| 1203 | `function` | `renderizarBandeja` | `renderizarBandeja(categoria)` |
+| 1331 | `function` | `configurarEventosInteraccion` | `configurarEventosInteraccion()` |
 
 ### Símbolos Internos (Nivel Superior)
 | Línea | Tipo | Símbolo | Firma |
 | ---: | :--- | :--- | :--- |
-| 43 | `const` | `ETIQUETAS_CLASE` | `ETIQUETAS_CLASE` |
-| 50 | `const` | `PESTANAS_POR_CLASE` | `PESTANAS_POR_CLASE` |
-| 77 | `const` | `CATEGORIAS_AGRUPADAS` | `CATEGORIAS_AGRUPADAS` |
-| 82 | `const` | `RANURAS_MK_POR_CLASE` | `RANURAS_MK_POR_CLASE` |
-| 111 | `const` | `DESCRIPCIONES_SUPERFICIE_HAB` | `DESCRIPCIONES_SUPERFICIE_HAB` |
-| 118 | `let` | `categoriaActiva` | `categoriaActiva` |
-| 119 | `let` | `ranuraMKActiva` | `ranuraMKActiva` |
-| 120 | `let` | `subRanuraSecundariaIdx` | `subRanuraSecundariaIdx` |
-| 122 | `const` | `barraEstado` | `barraEstado` |
-| 123 | `const` | `contenedorItems` | `contenedorItems` |
-| 124 | `const` | `bandejaInferior` | `bandejaInferior` |
-| 125 | `const` | `hudConduccion` | `hudConduccion` |
-| 126 | `const` | `btnModoRuedas` | `btnModoRuedas` |
-| 127 | `const` | `btnQuitar` | `btnQuitar` |
-| 128 | `const` | `btnAlternarModo` | `btnAlternarModo` |
-| 129 | `const` | `btnCamara` | `btnCamara` |
-| 130 | `const` | `btnAudio` | `btnAudio` |
-| 131 | `const` | `btnPista` | `btnPista` |
-| 132 | `const` | `btnClaseVehiculo` | `btnClaseVehiculo` |
-| 133 | `const` | `btnHabitacion` | `btnHabitacion` |
-| 134 | `const` | `altitudHud` | `altitudHud` |
-| 135 | `const` | `guiaVueloHud` | `guiaVueloHud` |
-| 138 | `const` | `selectorClaseMK` | `selectorClaseMK` |
-| 139 | `const` | `panelPersonalizacionMK` | `panelPersonalizacionMK` |
-| 140 | `const` | `panelStatsMK` | `panelStatsMK` |
-| 141 | `const` | `modalCircuitosMK` | `modalCircuitosMK` |
-| 142 | `const` | `gridCircuitosMK` | `gridCircuitosMK` |
-| 143 | `const` | `btnAbrirCopasMK` | `btnAbrirCopasMK` |
-| 144 | `const` | `btnCopasMK` | `btnCopasMK` |
-| 145 | `const` | `btnCerrarModalMK` | `btnCerrarModalMK` |
-| 148 | `const` | `CLAVE_APODO_LOCAL` | `CLAVE_APODO_LOCAL` |
-| 149 | `const` | `panelMultijugador` | `panelMultijugador` |
-| 150 | `const` | `badgeModoRed` | `badgeModoRed` |
-| 151 | `const` | `inputApodoRed` | `inputApodoRed` |
-| 152 | `const` | `vistaRedLobby` | `vistaRedLobby` |
-| 153 | `const` | `btnCrearSala` | `btnCrearSala` |
-| 154 | `const` | `inputCodigoSala` | `inputCodigoSala` |
-| 155 | `const` | `btnUnirseSala` | `btnUnirseSala` |
-| 156 | `const` | `vistaRedActiva` | `vistaRedActiva` |
-| 157 | `const` | `codigoSalaActivo` | `codigoSalaActivo` |
-| 158 | `const` | `rolSalaActivo` | `rolSalaActivo` |
-| 159 | `const` | `listaJugadoresSala` | `listaJugadoresSala` |
-| 160 | `const` | `btnSalirSala` | `btnSalirSala` |
-| 161 | `const` | `avisoRed` | `avisoRed` |
-| 162 | `const` | `capaEtiquetas3D` | `capaEtiquetas3D` |
-| 163 | `const` | `hudLeaderboard` | `hudLeaderboard` |
-| 164 | `const` | `listaLeaderboardHud` | `listaLeaderboardHud` |
-| 166 | `const` | `etiquetasDomPorId` | `etiquetasDomPorId` |
-| 167 | `let` | `timerAvisoRed` | `timerAvisoRed` |
-| 168 | `let` | `ultimoHtmlLeaderboard` | `ultimoHtmlLeaderboard` |
-| 170 | `function` | `mostrarAvisoRed` | `mostrarAvisoRed(mensaje, esError = false)` |
-| 435 | `function` | `actualizarBotonesClaseYHUD` | `actualizarBotonesClaseYHUD()` |
-| 475 | `function` | `actualizarNombreChasisHUD` | `actualizarNombreChasisHUD()` |
-| 482 | `function` | `formatearBonoPieza` | `formatearBonoPieza(mod)` |
-| 491 | `function` | `obtenerListaYActivaPorCategoria` | `obtenerListaYActivaPorCategoria(categoria)` |
-| 511 | `function` | `aplicarSeleccionItemTaller` | `aplicarSeleccionItemTaller(pieza)` |
-| 908 | `function` | `actualizarTextoBtnHabitacion` | `actualizarTextoBtnHabitacion()` |
+| 44 | `const` | `ETIQUETAS_CLASE` | `ETIQUETAS_CLASE` |
+| 51 | `const` | `PESTANAS_POR_CLASE` | `PESTANAS_POR_CLASE` |
+| 78 | `const` | `CATEGORIAS_AGRUPADAS` | `CATEGORIAS_AGRUPADAS` |
+| 83 | `const` | `RANURAS_MK_POR_CLASE` | `RANURAS_MK_POR_CLASE` |
+| 112 | `const` | `DESCRIPCIONES_SUPERFICIE_HAB` | `DESCRIPCIONES_SUPERFICIE_HAB` |
+| 119 | `let` | `categoriaActiva` | `categoriaActiva` |
+| 120 | `let` | `ranuraMKActiva` | `ranuraMKActiva` |
+| 121 | `let` | `subRanuraSecundariaIdx` | `subRanuraSecundariaIdx` |
+| 123 | `const` | `barraEstado` | `barraEstado` |
+| 124 | `const` | `contenedorItems` | `contenedorItems` |
+| 125 | `const` | `bandejaInferior` | `bandejaInferior` |
+| 126 | `const` | `hudConduccion` | `hudConduccion` |
+| 127 | `const` | `btnModoRuedas` | `btnModoRuedas` |
+| 128 | `const` | `btnQuitar` | `btnQuitar` |
+| 129 | `const` | `btnAlternarModo` | `btnAlternarModo` |
+| 130 | `const` | `btnCamara` | `btnCamara` |
+| 131 | `const` | `btnAudio` | `btnAudio` |
+| 132 | `const` | `btnPista` | `btnPista` |
+| 133 | `const` | `btnClaseVehiculo` | `btnClaseVehiculo` |
+| 134 | `const` | `btnHabitacion` | `btnHabitacion` |
+| 135 | `const` | `altitudHud` | `altitudHud` |
+| 136 | `const` | `guiaVueloHud` | `guiaVueloHud` |
+| 139 | `const` | `selectorClaseMK` | `selectorClaseMK` |
+| 140 | `const` | `panelPersonalizacionMK` | `panelPersonalizacionMK` |
+| 141 | `const` | `panelStatsMK` | `panelStatsMK` |
+| 142 | `const` | `modalCircuitosMK` | `modalCircuitosMK` |
+| 143 | `const` | `gridCircuitosMK` | `gridCircuitosMK` |
+| 144 | `const` | `btnAbrirCopasMK` | `btnAbrirCopasMK` |
+| 145 | `const` | `btnCopasMK` | `btnCopasMK` |
+| 146 | `const` | `btnCerrarModalMK` | `btnCerrarModalMK` |
+| 149 | `const` | `CLAVE_APODO_LOCAL` | `CLAVE_APODO_LOCAL` |
+| 150 | `const` | `panelMultijugador` | `panelMultijugador` |
+| 151 | `const` | `badgeModoRed` | `badgeModoRed` |
+| 152 | `const` | `inputApodoRed` | `inputApodoRed` |
+| 153 | `const` | `vistaRedLobby` | `vistaRedLobby` |
+| 154 | `const` | `btnCrearSala` | `btnCrearSala` |
+| 155 | `const` | `inputCodigoSala` | `inputCodigoSala` |
+| 156 | `const` | `btnUnirseSala` | `btnUnirseSala` |
+| 157 | `const` | `vistaRedActiva` | `vistaRedActiva` |
+| 158 | `const` | `codigoSalaActivo` | `codigoSalaActivo` |
+| 159 | `const` | `rolSalaActivo` | `rolSalaActivo` |
+| 160 | `const` | `listaJugadoresSala` | `listaJugadoresSala` |
+| 161 | `const` | `btnSalirSala` | `btnSalirSala` |
+| 162 | `const` | `avisoRed` | `avisoRed` |
+| 163 | `const` | `capaEtiquetas3D` | `capaEtiquetas3D` |
+| 164 | `const` | `hudLeaderboard` | `hudLeaderboard` |
+| 165 | `const` | `listaLeaderboardHud` | `listaLeaderboardHud` |
+| 166 | `const` | `btnReubicarMeta` | `btnReubicarMeta` |
+| 167 | `const` | `btnControlesTactiles` | `btnControlesTactiles` |
+| 168 | `const` | `btnColapsarTallerMK` | `btnColapsarTallerMK` |
+| 169 | `const` | `controlesTactiles` | `controlesTactiles` |
+| 170 | `const` | `joystickBase` | `joystickBase` |
+| 171 | `const` | `joystickPomo` | `joystickPomo` |
+| 172 | `const` | `grupoVueloTactil` | `grupoVueloTactil` |
+| 173 | `const` | `btnTactilGas` | `btnTactilGas` |
+| 174 | `const` | `btnTactilFreno` | `btnTactilFreno` |
+| 175 | `const` | `btnTactilDerrape` | `btnTactilDerrape` |
+| 176 | `const` | `btnTactilSubir` | `btnTactilSubir` |
+| 177 | `const` | `btnTactilBajar` | `btnTactilBajar` |
+| 245 | `const` | `etiquetasDomPorId` | `etiquetasDomPorId` |
+| 246 | `let` | `timerAvisoRed` | `timerAvisoRed` |
+| 247 | `let` | `ultimoHtmlLeaderboard` | `ultimoHtmlLeaderboard` |
+| 249 | `function` | `mostrarAvisoRed` | `mostrarAvisoRed(mensaje, esError = false)` |
+| 514 | `function` | `actualizarBotonesClaseYHUD` | `actualizarBotonesClaseYHUD()` |
+| 555 | `function` | `actualizarNombreChasisHUD` | `actualizarNombreChasisHUD()` |
+| 562 | `function` | `formatearBonoPieza` | `formatearBonoPieza(mod)` |
+| 571 | `function` | `obtenerListaYActivaPorCategoria` | `obtenerListaYActivaPorCategoria(categoria)` |
+| 591 | `function` | `aplicarSeleccionItemTaller` | `aplicarSeleccionItemTaller(pieza)` |
+| 988 | `function` | `actualizarTextoBtnHabitacion` | `actualizarTextoBtnHabitacion()` |
 
 ---
 ## `js/main.js` (185 líneas)

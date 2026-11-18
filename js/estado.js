@@ -174,3 +174,15 @@ export const estadoRed = {
 };
 
 export const jugadoresRemotos = new Map();
+
+// Estado de detección móvil y entradas multitáctiles en tiempo real
+export const entradaTactil = {
+  esMovil: false,
+  mostrarControles: false,
+  direccion: 0,
+  acelerar: false,
+  frenar: false,
+  derrape: false,
+  subir: false,
+  bajar: false
+};

@@ -2107,4 +2107,124 @@ if (capaEtiq.children.length !== 0) {
 }
 
 console.log('OK: Fases 3 y 4 Multijugador (Lobby, Parrilla escalonada 2 columnas, Colisiones PvP pesoImpacto, Etiquetas 3D y Leaderboard) verificadas.');
+
+// 4O. Verificación de Soporte Móvil, Diseño Responsivo y Controles Multitáctiles
+if (
+  !indexHtml.includes('user-scalable=no') ||
+  !indexHtml.includes('viewport-fit=cover')
+) {
+  throw new Error('[4O] index.html debe configurar viewport móvil con user-scalable=no y viewport-fit=cover');
+}
+for (const idTactilReq of [
+  'btn-reubicar-meta', 'btn-controles-tactiles', 'btn-colapsar-taller-mk',
+  'controles-tactiles', 'zona-joystick-tactil', 'joystick-direccion-base',
+  'joystick-direccion-pomo', 'zona-pedales-tactil', 'grupo-vuelo-tactil',
+  'btn-tactil-subir', 'btn-tactil-bajar', 'btn-tactil-derrape',
+  'btn-tactil-freno', 'btn-tactil-gas'
+]) {
+  if (!indexHtml.includes(`id="${idTactilReq}"`)) {
+    throw new Error(`[4O] Falta elemento móvil/táctil '${idTactilReq}' en index.html`);
+  }
+}
+for (const selMovil of [
+  'touch-action: none',
+  '#controles-tactiles',
+  '#joystick-direccion-base',
+  '@media (max-width: 920px)',
+  'orientation: landscape',
+  'orientation: portrait'
+]) {
+  if (!cssText.includes(selMovil)) {
+    throw new Error(`[4O] Falta regla CSS móvil/responsiva '${selMovil}' en css/estilos.css`);
+  }
+}
+
+if (
+  !modEstado.entradaTactil ||
+  !('esMovil' in modEstado.entradaTactil) ||
+  !('mostrarControles' in modEstado.entradaTactil) ||
+  !('direccion' in modEstado.entradaTactil) ||
+  !('acelerar' in modEstado.entradaTactil) ||
+  !('frenar' in modEstado.entradaTactil) ||
+  !('derrape' in modEstado.entradaTactil) ||
+  !('subir' in modEstado.entradaTactil) ||
+  !('bajar' in modEstado.entradaTactil)
+) {
+  throw new Error('[4O] js/estado.js no exporta entradaTactil con el contrato completo');
+}
+
+// Probar detección de dispositivo táctil y visibilidad contextual de #controles-tactiles / #grupo-vuelo-tactil
+globalThis.window.ontouchstart = () => {};
+const esTouchDetectado = modUI.detectarDispositivoTactil();
+delete globalThis.window.ontouchstart;
+if (!esTouchDetectado || !modEstado.entradaTactil.esMovil || !modEstado.entradaTactil.mostrarControles) {
+  throw new Error('[4O] detectarDispositivoTactil() no activó entradaTactil al detectar ventana táctil');
+}
+
+while (modEstado.estadoCarro.claseVehiculo !== 'coche') modUI.cambiarClaseVehiculo();
+if (modEstado.estadoCarro.modoJuego !== 'conduccion') modUI.alternarModoTallerConduccion();
+modUI.alternarControlesTactiles(true);
+const domControlesTactiles = globalThis.document.getElementById('controles-tactiles');
+const domGrupoVuelo = globalThis.document.getElementById('grupo-vuelo-tactil');
+if (domControlesTactiles.style.display !== 'flex' || domGrupoVuelo.style.display !== 'none') {
+  throw new Error('[4O] Visibilidad incorrecta en #controles-tactiles o #grupo-vuelo-tactil para coche');
+}
+
+while (modEstado.estadoCarro.claseVehiculo !== 'avion') modUI.cambiarClaseVehiculo();
+modUI.actualizarVisibilidadControlesTactiles();
+if (domGrupoVuelo.style.display !== 'flex') {
+  throw new Error('[4O] #grupo-vuelo-tactil debe mostrarse automáticamente cuando claseVehiculo === avion');
+}
+
+// Probar fusión física en conduccion.js usando entradaTactil (acelerar, dirección proporcional, freno, derrape y vuelo)
+while (modEstado.estadoCarro.claseVehiculo !== 'coche') modUI.cambiarClaseVehiculo();
+modUI.cambiarHabitacion('habitacion_andy');
+globalThis._mockRayEstado = { esPista: true, tipoSuperficie: 'pista_asfalto', sueloFijo: 0.02, pendientePorX: 0 };
+modCond.reposicionarEnMeta();
+modEstado.estadoCarro.modoJuego = 'conduccion';
+Object.keys(modEstado.teclasConduccion).forEach((k) => { modEstado.teclasConduccion[k] = false; });
+
+modEstado.entradaTactil.acelerar = true;
+modEstado.entradaTactil.direccion = -0.5; // Giro proporcional a la izquierda (-50%)
+for (let i = 0; i < 20; i++) {
+  modCond.actualizarFisicaConduccion(0.05);
+}
+if (modEstado.fisicaCarro.velocidad <= 1.5 || modEstado.fisicaCarro.anguloVolante <= 0.10 || modEstado.fisicaCarro.anguloVolante >= 0.30) {
+  throw new Error(`[4O] Fusión táctil coche inválida: vel=${modEstado.fisicaCarro.velocidad.toFixed(2)}, volante=${modEstado.fisicaCarro.anguloVolante.toFixed(3)}`);
+}
+modEstado.entradaTactil.derrape = true;
+modEstado.entradaTactil.direccion = 1.0;
+for (let i = 0; i < 6; i++) {
+  modCond.actualizarFisicaConduccion(0.05);
+}
+if (!modEstado.fisicaCarro.derrapando || modEstado.fisicaCarro.anguloVolante >= -0.20) {
+  throw new Error('[4O] entradaTactil.derrape o dirección derecha +1.0 no respondieron en conducción');
+}
+modUI.limpiarEntradasTactiles();
+
+// Probar vuelo táctil en avión (Subir y Bajar)
+while (modEstado.estadoCarro.claseVehiculo !== 'avion') modUI.cambiarClaseVehiculo();
+modCond.reposicionarEnMeta();
+modEstado.estadoCarro.modoJuego = 'conduccion';
+modEstado.entradaTactil.acelerar = true;
+modEstado.entradaTactil.subir = true;
+for (let i = 0; i < 40; i++) {
+  modCond.actualizarFisicaConduccion(0.05);
+}
+const altSubidaTactil = modEstado.fisicaCarro.altitudVuelo;
+modEstado.entradaTactil.subir = false;
+modEstado.entradaTactil.bajar = true;
+for (let i = 0; i < 15; i++) {
+  modCond.actualizarFisicaConduccion(0.05);
+}
+const altBajadaTactil = modEstado.fisicaCarro.altitudVuelo;
+modUI.limpiarEntradasTactiles();
+modUI.alternarControlesTactiles(false);
+while (modEstado.estadoCarro.claseVehiculo !== 'coche') modUI.cambiarClaseVehiculo();
+if (modEstado.estadoCarro.modoJuego === 'conduccion') modUI.alternarModoTallerConduccion();
+if (altSubidaTactil <= 0.8 || altBajadaTactil >= altSubidaTactil) {
+  throw new Error(`[4O] Controles táctiles de vuelo fallaron: subida=${altSubidaTactil.toFixed(2)}, bajada=${altBajadaTactil.toFixed(2)}`);
+}
+
+console.log('OK: Soporte móvil responsivo, viewport táctil, joystick proporcional, pedales multitouch y vuelo táctil verificados.');
 console.log('=== VERIFICACIÓN COMPLETA EXITOSA ===');
